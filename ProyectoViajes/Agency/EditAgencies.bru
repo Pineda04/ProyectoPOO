@@ -1,0 +1,22 @@
+meta {
+  name: EditAgencies
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{PATHV}}/agencies/F850B853-9CC0-490B-7BB8-08DCABC2EFC6
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "DestinoFeliz",
+    "description": "Ofrecemos paquetes turísticos personalizados y experiencias únicas en destinos exóticos.",
+    "contact": "contacto@destinofeliz.com",
+    "location": "Madrid, España",
+    "registrationDate": "2021-06-24T09:11:30.011Z"
+  }
+  
+}
