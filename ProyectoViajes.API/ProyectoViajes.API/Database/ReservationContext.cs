@@ -17,9 +17,10 @@ namespace ProyectoViajes.API.Database
 
             
             public DbSet<ReservationEntity> Reservations { get; set; }
-            
-             
-            protected override void OnModelCreating(ModelBuilder modelBuilder)
+
+            public DbSet<AssessmentEntity> Assessments { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
             {
                 base.OnModelCreating(modelBuilder);
 

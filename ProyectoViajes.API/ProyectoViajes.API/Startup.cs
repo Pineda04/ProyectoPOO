@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProyectoViajes.API.Database;
+using ProyectoViajes.API.Services.Interfaces;
+using ProyectoViajes.API.Services;
 
 namespace ProyectoViajes.API
 {
@@ -20,6 +22,9 @@ namespace ProyectoViajes.API
 
             services.AddDbContext<ApplicationDbContext>(options =>
            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<IAssessmentService, AssessmentService>();
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
