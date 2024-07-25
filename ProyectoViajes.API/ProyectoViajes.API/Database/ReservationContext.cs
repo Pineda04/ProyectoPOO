@@ -22,8 +22,13 @@ namespace ProyectoViajes.API.Database
             protected override void OnModelCreating(ModelBuilder modelBuilder)
             {
                 base.OnModelCreating(modelBuilder);
-             
-            }
+
+                modelBuilder.Entity<ReservationEntity>()
+               .HasMany(r => r.Payments)
+               .WithOne(p => p.Reservation)
+               .HasForeignKey(p => p.ReservationId);
+
+        }
         }
     }
 

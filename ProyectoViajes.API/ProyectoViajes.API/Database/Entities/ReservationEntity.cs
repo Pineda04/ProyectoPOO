@@ -10,22 +10,22 @@ namespace ProyectoViajes.API.Database.Entities
         [Key]
         public Guid ReservationId { get; set; }
 
-        [Required]
         public Guid UserId { get; set; }
-
-        [Required]
         public Guid PackageId { get; set; }
 
-        [Required]
+        [Display(Name = "Fecha de Reserva")]
+        [Required(ErrorMessage = "La {0} es requerida")]
         public DateTime ReservationDate { get; set; }
 
-        [Required]
-        [StringLength(50)]
+        [Display(Name = "Estado")]
+        [Required(ErrorMessage = "El {0} es requerido")]
         public string Status { get; set; }
 
-        [Required]
-        [Range(0.01, double.MaxValue)]
+        [Display(Name = "Total Pagado")]
+        [Required(ErrorMessage = "El {0} es requerido")]
         public decimal TotalPaid { get; set; }
+
+        public virtual ICollection<PaymentEntity> Payments { get; set; }
 
     }
 }
