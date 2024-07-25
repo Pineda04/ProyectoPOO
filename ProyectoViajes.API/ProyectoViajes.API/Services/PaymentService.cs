@@ -32,10 +32,11 @@ namespace ProyectoViajes.API.Services
 
             return new ResponseDto<List<PaymentDto>>
             {
+                StatusCode = 200,
+                Status = true,
                 Data = payments,
                 Message = "Payments retrieved successfully",
-                StatusCode = 200,
-                Status = true
+                
             };
         }
 
@@ -47,9 +48,10 @@ namespace ProyectoViajes.API.Services
             {
                 return new ResponseDto<PaymentDto>
                 {
-                    Message = "Payment not found",
                     StatusCode = 404,
-                    Status = false
+                    Status = false,
+                    Message = "Payment not found",
+                    
                 };
             }
 
@@ -65,10 +67,11 @@ namespace ProyectoViajes.API.Services
 
             return new ResponseDto<PaymentDto>
             {
+                StatusCode = 200,
+                Status = true,
                 Data = paymentDto,
                 Message = "Payment retrieved successfully",
-                StatusCode = 200,
-                Status = true
+               
             };
         }
 
@@ -99,10 +102,11 @@ namespace ProyectoViajes.API.Services
 
             return new ResponseDto<PaymentDto>
             {
+                StatusCode = 201,
+                Status = true,
                 Data = paymentDto,
                 Message = "Payment created successfully",
-                StatusCode = 201,
-                Status = true
+                
             };
         }
 
@@ -114,9 +118,10 @@ namespace ProyectoViajes.API.Services
             {
                 return new ResponseDto<PaymentDto>
                 {
-                    Message = "Payment not found",
                     StatusCode = 404,
-                    Status = false
+                    Status = false,
+                    Message = "Payment not found",
+                    
                 };
             }
 
@@ -141,10 +146,11 @@ namespace ProyectoViajes.API.Services
 
             return new ResponseDto<PaymentDto>
             {
+                StatusCode = 200,
+                Status = true,
                 Data = paymentDto,
                 Message = "Payment updated successfully",
-                StatusCode = 200,
-                Status = true
+                
             };
         }
 
@@ -156,9 +162,10 @@ namespace ProyectoViajes.API.Services
             {
                 return new ResponseDto<PaymentDto>
                 {
-                    Message = "Payment not found",
                     StatusCode = 404,
-                    Status = false
+                    Status = false,
+                    Message = "Payment not found",
+                    
                 };
             }
 
@@ -167,9 +174,10 @@ namespace ProyectoViajes.API.Services
 
             return new ResponseDto<PaymentDto>
             {
-                Message = "Payment deleted successfully",
                 StatusCode = 200,
-                Status = true
+                Status = true,
+                Message = "Payment deleted successfully",
+                
             };
         }
     }

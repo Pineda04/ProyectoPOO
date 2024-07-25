@@ -23,7 +23,7 @@ namespace ProyectoViajes.API.Controllers
             public async Task<ActionResult<ResponseDto<List<PaymentDto>>>> GetAll()
             {
 
-                var response = await _paymentService.GetCategoriesListAsync();
+                var response = await _paymentService.GetPaymentsListAsync();
                 return StatusCode(response.StatusCode, response);
             }
 
@@ -31,7 +31,7 @@ namespace ProyectoViajes.API.Controllers
             public async Task<ActionResult> Get(Guid id)
             {
 
-                var response = await _paymentService.GetCategoriesByUdAsync(id);
+                var response = await _paymentService.GetPaymentByIdAsync(id);
 
 
                 return StatusCode(response.StatusCode, response);
