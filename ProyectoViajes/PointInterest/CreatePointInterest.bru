@@ -1,0 +1,20 @@
+meta {
+  name: CreatePointInterest
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{PATHV}}/pointsinterest
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Torre Eiffel",
+    "description": "Un emblemático rascacielos de hierro y uno de los monumentos más reconocidos del mundo. Ofrece impresionantes vistas panorámicas de la ciudad.",
+    "destinationId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+  }
+  
+}

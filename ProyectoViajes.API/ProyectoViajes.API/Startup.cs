@@ -27,9 +27,13 @@ namespace ProyectoViajes.API
             services.AddDbContext<ProyectoViajesContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            // Add custom services 
+            // Add servicios de Agency
             services.AddTransient<IAgenciesService, AgenciesService>();
             services.AddTransient<IAuthService, AuthService>();
+            services.AddTransient<IDestinationsService, DestinationsService>();
+            services.AddTransient<IPointsInterestService, PointsInterestService>();
+            services.AddTransient<ITravelPackagesService, TravelPackagesService>();
+            services.AddTransient<IActivitiesService, ActivitiesService>();
 
             // Add AutoMapper
             services.AddAutoMapper(typeof(AutoMapperProfile));
