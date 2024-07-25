@@ -20,10 +20,14 @@ namespace ProyectoViajes.API
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 
+            services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<IReservationService, ReservationService>();
+            services.AddScoped<IAssessmentService, AssessmentService>();
+
             services.AddDbContext<ApplicationDbContext>(options =>
            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddScoped<IAssessmentService, AssessmentService>();
+           
 
         }
 
