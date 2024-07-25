@@ -1,34 +1,30 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProyectoViajes.API.Database.Entities
 {
+    [Table("reservations", Schema = "dbo")]
     public class ReservationEntity
     {
 
         [Key]
-        public Guid Id { get; set; }
+        public Guid ReservationId { get; set; }
 
-        [Display(Name = "Usuario ID")]
-        [Required(ErrorMessage = "El {0} es requerido")]
+        [Required]
         public Guid UserId { get; set; }
 
-        [Display(Name = "Paquete ID")]
-        [Required(ErrorMessage = "El {0} es requerido")]
+        [Required]
         public Guid PackageId { get; set; }
 
-        [Display(Name = "Fecha de Reserva")]
-        [Required(ErrorMessage = "La {0} es requerida")]
-        [DataType(DataType.Date)]
+        [Required]
         public DateTime ReservationDate { get; set; }
 
-        [Display(Name = "Estado")]
-        [Required(ErrorMessage = "El {0} es requerido")]
+        [Required]
         [StringLength(50)]
         public string Status { get; set; }
 
-        [Display(Name = "Total Pagado")]
-        [Required(ErrorMessage = "El {0} es requerido")]
-        [Range(0.01, double.MaxValue, ErrorMessage = "El {0} debe ser mayor a 0")]
+        [Required]
+        [Range(0.01, double.MaxValue)]
         public decimal TotalPaid { get; set; }
 
     }

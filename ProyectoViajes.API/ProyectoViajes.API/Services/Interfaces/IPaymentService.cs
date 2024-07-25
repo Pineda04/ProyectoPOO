@@ -6,9 +6,9 @@ namespace ProyectoViajes.API.Services.Interfaces
     public interface IPaymentService
     {
 
-        Task<ResponseDto<List<PaymentDto>>> GetCategoriesListAsync();
+        Task<ResponseDto<List<PaymentDto>>> GetPaymentsListAsync();
 
-        Task<ResponseDto<PaymentDto>> GetCategoriesByUdAsync(Guid id);
+        Task<ResponseDto<PaymentDto>> GetPaymentByIdAsync(Guid id);
 
         Task<ResponseDto<PaymentDto>> CreateAsync(CreatePaymentDto dto);
 

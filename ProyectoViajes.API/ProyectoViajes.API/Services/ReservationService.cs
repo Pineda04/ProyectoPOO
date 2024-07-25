@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProyectoViajes.API.Database;
+using ProyectoViajes.API.Database.Entities;
 using ProyectoViajes.API.Dtos.common;
 using ProyectoViajes.API.Dtos.Reservations;
 using ProyectoViajes.API.Services.Interfaces;
@@ -21,7 +22,7 @@ namespace ProyectoViajes.API.Services
             var reservations = await _context.Reservations
                 .Select(r => new ReservationDto
                 {
-                    Id = r.Id,
+                    Id = r.UserId,
                     UserId = r.UserId,
                     PackageId = r.PackageId,
                     ReservationDate = r.ReservationDate,
@@ -56,7 +57,7 @@ namespace ProyectoViajes.API.Services
 
             var reservationDto = new ReservationDto
             {
-                Id = reservation.Id,
+                Id = reservation.UserId,
                 UserId = reservation.UserId,
                 PackageId = reservation.PackageId,
                 ReservationDate = reservation.ReservationDate,
@@ -76,7 +77,7 @@ namespace ProyectoViajes.API.Services
 
         public async Task<ResponseDto<ReservationDto>> CreateAsync(CreateReservationDto dto)
         {
-            var reservation = new ReservationDto
+            var reservation = new ReservationEntity
             {
                 UserId = dto.UserId,
                 PackageId = dto.PackageId,
@@ -90,7 +91,7 @@ namespace ProyectoViajes.API.Services
 
             var reservationDto = new ReservationDto
             {
-                Id = reservation.Id,
+                Id = reservation.UserId,
                 UserId = reservation.UserId,
                 PackageId = reservation.PackageId,
                 ReservationDate = reservation.ReservationDate,
@@ -134,7 +135,7 @@ namespace ProyectoViajes.API.Services
 
             var reservationDto = new ReservationDto
             {
-                Id = reservation.Id,
+                Id = reservation.UserId,
                 UserId = reservation.UserId,
                 PackageId = reservation.PackageId,
                 ReservationDate = reservation.ReservationDate,

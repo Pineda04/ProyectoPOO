@@ -5,7 +5,7 @@
 
         public Guid Id { get; set; }    
 
-        public int ReservationId { get; set; }
+        public Guid ReservationId { get; set; }
 
         public decimal Amount { get; set; }
 
