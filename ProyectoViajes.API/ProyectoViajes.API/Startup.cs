@@ -1,4 +1,7 @@
-﻿    namespace ProyectoViajes.API
+﻿using Microsoft.EntityFrameworkCore;
+using ProyectoViajes.API.Database;
+
+namespace ProyectoViajes.API
 {
     public class Startup
     {
@@ -14,6 +17,9 @@
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+           options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
