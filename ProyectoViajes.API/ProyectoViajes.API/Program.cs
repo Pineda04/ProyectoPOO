@@ -18,7 +18,6 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = services.GetRequiredService<ProyectoViajesContext>();
-        //await BlogUNAHSeeder.LadDataAsync(context, loggerFactory);
     }
     catch (Exception e)
     {

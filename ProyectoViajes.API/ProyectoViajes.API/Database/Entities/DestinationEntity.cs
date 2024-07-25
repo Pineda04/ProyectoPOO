@@ -29,7 +29,7 @@ namespace ProyectoViajes.API.Database.Entities
         public string Location { get; set; }
 
         // Puntos de interes
-        public virtual IEnumerable<PointInterestEntity> PointInterests { get; set; }
+        public virtual IEnumerable<PointInterestEntity> PointsInterest { get; set; }
 
         // Para la relación con Paquete de viaje
         public virtual IEnumerable<TravelPackageEntity> TravelPackages  { get; set; }
