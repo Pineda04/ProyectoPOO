@@ -6,6 +6,7 @@ using ProyectoViajes.API.Services.Interfaces;
 namespace ProyectoViajes.API.Controllers
 {
     [ApiController]
+     
     [Route("api/payments")]
     public class PaymentController : Controller
     {

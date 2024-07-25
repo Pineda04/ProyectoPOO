@@ -6,6 +6,17 @@ meta {
 
 post {
   url: https://localhost:7018/api/payments
-  body: none
+  body: json
   auth: none
+}
+
+body:json {
+  {
+    "reservationId": "550e8400-e29b-41d4-a716-446655440000",
+    "amount": 250.00,
+    "paymentDate": "2024-07-25T00:00:00Z",
+    "paymentMethod": "Credit Card",
+    "status": "Completed"
+  }
+   
 }

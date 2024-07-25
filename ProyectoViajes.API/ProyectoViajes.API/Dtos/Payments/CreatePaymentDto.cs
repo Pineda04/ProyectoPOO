@@ -9,5 +9,7 @@ namespace ProyectoViajes.API.Dtos.Payments
         public DateTime PaymentDate { get; set; }
         public string PaymentMethod { get; set; }
         public string Status { get; set; }
+
+        
     }
 }

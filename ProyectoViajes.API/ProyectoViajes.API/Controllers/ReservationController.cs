@@ -7,7 +7,8 @@ namespace ProyectoViajes.API.Controllers
 {
 
     [ApiController]
-    [Route("api/reservations")]
+     
+      [Route("api/reservations")]
     public class ReservationController : Controller
     {
         private readonly IReservationService _reservationService;

@@ -6,6 +6,16 @@ meta {
 
 post {
   url: https://localhost:7018/api/assessments
-  body: none
+  body: json
   auth: none
+}
+
+body:json {
+  {
+    "userId": "550e8400-e29b-41d4-a716-446655440000",
+    "packageId": "550e8400-e29b-41d4-a716-446655440000",
+    "rating": 5,
+    "comment": "Excellent package, highly recommended!",
+    "date": "2024-07-25T00:00:00Z"
+  }
 }
