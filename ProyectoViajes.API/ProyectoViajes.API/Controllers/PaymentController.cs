@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ProyectoViajes.API.Dtos.common;
+using ProyectoViajes.API.Dtos.Common;
 using ProyectoViajes.API.Dtos.Payments;
 using ProyectoViajes.API.Services.Interfaces;
 

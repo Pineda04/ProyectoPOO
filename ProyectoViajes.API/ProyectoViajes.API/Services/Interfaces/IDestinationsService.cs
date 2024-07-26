@@ -1,4 +1,4 @@
-﻿using ProyectoViajes.API.Dtos.common;
+﻿using ProyectoViajes.API.Dtos.Common;
 using ProyectoViajes.API.Dtos.Destinations;
 
 namespace ProyectoViajes.API.Services.Interfaces

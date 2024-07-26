@@ -4,7 +4,7 @@ using ProyectoViajes.API.Database;
 using ProyectoViajes.API.Dtos.PointsInterest;
 using ProyectoViajes.API.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using ProyectoViajes.API.Dtos.common;
+using ProyectoViajes.API.Dtos.Common;
 
 namespace ProyectoViajes.API.Services
 {
@@ -22,6 +22,7 @@ namespace ProyectoViajes.API.Services
         public async Task<ResponseDto<List<PointInterestDto>>> GetPointsInterestListAsync()
         {
             var pointsInterestsEntity = await _context.PoinstInterest.ToListAsync();
+            var pointInterestEntities = await _context.PointsInterest.ToListAsync();
             var pointsInterestsDtos = _mapper.Map<List<PointInterestDto>>(pointsInterestsEntity);
 
             return new ResponseDto<List<PointInterestDto>>
@@ -35,7 +36,7 @@ namespace ProyectoViajes.API.Services
 
         public async Task<ResponseDto<PointInterestDto>> GetPointInterestByIdAsync(Guid id)
         {
-            var pointInterestEntity = await _context.PoinstInterest.FirstOrDefaultAsync(e => e.Id == id);
+            var pointInterestEntity = await _context.PointsInterest.FirstOrDefaultAsync(e => e.Id == id);
 
             if (pointInterestEntity == null)
             {
@@ -63,6 +64,7 @@ namespace ProyectoViajes.API.Services
             var pointInterestEntity = _mapper.Map<PointInterestEntity>(dto);
 
             _context.PoinstInterest.Add(pointInterestEntity);
+            _context.PointsInterest.Add(pointInterestEntity);
             await _context.SaveChangesAsync();
 
             var pointInterestDto = _mapper.Map<PointInterestDto>(pointInterestEntity);
@@ -78,7 +80,7 @@ namespace ProyectoViajes.API.Services
 
         public async Task<ResponseDto<PointInterestDto>> EditAsync(PointInterestEditDto dto, Guid id)
         {
-            var pointInterestEntity = await _context.PoinstInterest.FirstOrDefaultAsync(e => e.Id == id);
+            var pointInterestEntity = await _context.PointsInterest.FirstOrDefaultAsync(e => e.Id == id);
 
             if (pointInterestEntity == null)
             {
@@ -93,6 +95,7 @@ namespace ProyectoViajes.API.Services
             _mapper.Map(dto, pointInterestEntity);
 
             _context.PoinstInterest.Update(pointInterestEntity);
+            _context.PointsInterest.Update(pointInterestEntity);
             await _context.SaveChangesAsync();
 
             var pointInterestDto = _mapper.Map<PointInterestDto>(pointInterestEntity);
@@ -108,7 +111,7 @@ namespace ProyectoViajes.API.Services
 
         public async Task<ResponseDto<PointInterestDto>> DeleteAsync(Guid id)
         {
-            var pointInterestEntity = await _context.PoinstInterest.FirstOrDefaultAsync(e => e.Id == id);
+            var pointInterestEntity = await _context.PointsInterest.FirstOrDefaultAsync(e => e.Id == id);
 
             if (pointInterestEntity == null)
             {
@@ -121,6 +124,7 @@ namespace ProyectoViajes.API.Services
             }
 
             _context.PoinstInterest.Remove(pointInterestEntity);
+            _context.PointsInterest.Remove(pointInterestEntity);
             await _context.SaveChangesAsync();
 
             return new ResponseDto<PointInterestDto>

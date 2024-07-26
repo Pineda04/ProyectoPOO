@@ -1,9 +1,9 @@
 ﻿using ProyectoViajes.API.Database.Entities;
 using ProyectoViajes.API.Database;
 using ProyectoViajes.API.Dtos.Assessments;
-using ProyectoViajes.API.Dtos.common;
 using ProyectoViajes.API.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using ProyectoViajes.API.Dtos.Common;
 
 namespace ProyectoViajes.API.Services
 {
