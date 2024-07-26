@@ -36,7 +36,7 @@ namespace ProyectoViajes.API.Database.Entities
         [StringLength(50)]
         public string Status { get; set; }
 
-        public virtual ReservationEntity Reservation { get; set; }
+       public virtual ReservationEntity Reservation { get; set; }
     }
 
 }

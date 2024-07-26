@@ -6,75 +6,50 @@ using ProyectoViajes.API.Services.Interfaces;
 namespace ProyectoViajes.API.Controllers
 {
     [ApiController]
-     
     [Route("api/payments")]
-    public class PaymentController : Controller
+    public class PaymentController : ControllerBase
     {
- 
-         
-            private readonly IPaymentService _paymentService;
-            public PaymentController(IPaymentService categoriesService)
-            {
+        private readonly IPaymentService _paymentService;
 
-                this._paymentService = categoriesService;
-            }
+        public PaymentController(IPaymentService paymentService)
+        {
+            _paymentService = paymentService;
+        }
 
-            [HttpGet]
+        [HttpGet]
+        public async Task<ActionResult<ResponseDto<List<PaymentDto>>>> GetAll()
+        {
+            var response = await _paymentService.GetPaymentsListAsync();
+            return StatusCode(response.StatusCode, response);
+        }
 
-            public async Task<ActionResult<ResponseDto<List<PaymentDto>>>> GetAll()
-            {
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ResponseDto<PaymentDto>>> Get(Guid id)
+        {
+            var response = await _paymentService.GetPaymentByIdAsync(id);
+            return StatusCode(response.StatusCode, response);
+        }
 
-                var response = await _paymentService.GetPaymentsListAsync();
-                return StatusCode(response.StatusCode, response);
-            }
+        [HttpPost]
+        public async Task<ActionResult<ResponseDto<PaymentDto>>> Create(CreatePaymentDto dto)
+        {
+            var response = await _paymentService.CreateAsync(dto);
+            return StatusCode(response.StatusCode, response);
+        }
 
-            [HttpGet("{id}")]
-            public async Task<ActionResult> Get(Guid id)
-            {
+        [HttpPut("{id}")]
+        public async Task<ActionResult<ResponseDto<PaymentDto>>> Edit(EditPaymentDto dto, Guid id)
+        {
+            var response = await _paymentService.EditAsync(dto, id);
+            return StatusCode(response.StatusCode, response);
+        }
 
-                var response = await _paymentService.GetPaymentByIdAsync(id);
-
-
-                return StatusCode(response.StatusCode, response);
-                 
-
-            }
-
-            [HttpPost]
-
-            public async Task<ActionResult<ResponseDto<PaymentDto>>> Create(CreatePaymentDto dto)
-            {
-
-                
-
-                await _paymentService.CreateAsync(dto);
-
-                
-
-                var response = await _paymentService.CreateAsync(dto);
-
-                return StatusCode(response.StatusCode, response);
-            }
-
-
-            [HttpPut("{id}")]
-
-            public async Task<ActionResult<ResponseDto<PaymentDto>>> Edit(EditPaymentDto dto, Guid id)
-            {
-                var response = await _paymentService.EditAsync(dto, id);
-
-                return StatusCode(response.StatusCode, response);
-            }
-
-            [HttpDelete("{id}")]
-
-            public async Task<ActionResult<ResponseDto<PaymentDto>>> Delete(Guid id)
-            {
-                var response = await _paymentService.DeleteAsync(id);
-
-
-                return StatusCode(response.StatusCode, response);
-            }
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<ResponseDto<PaymentDto>>> Delete(Guid id)
+        {
+            var response = await _paymentService.DeleteAsync(id);
+            return StatusCode(response.StatusCode, response);
         }
     }
+}
 

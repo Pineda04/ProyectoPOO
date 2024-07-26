@@ -26,7 +26,7 @@ namespace ProyectoViajes.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ResponseDto<ReservationDto>>> Get(int id)
+        public async Task<ActionResult<ResponseDto<ReservationDto>>> Get(Guid id)
         {
             var response = await _reservationService.GetReservationByIdAsync(id);
             return StatusCode(response.StatusCode, response);
@@ -40,14 +40,14 @@ namespace ProyectoViajes.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<ResponseDto<ReservationDto>>> Edit(EditReservationDto dto, int id)
+        public async Task<ActionResult<ResponseDto<ReservationDto>>> Edit(EditReservationDto dto, Guid id)
         {
             var response = await _reservationService.EditAsync(dto, id);
             return StatusCode(response.StatusCode, response);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<ResponseDto<ReservationDto>>> Delete(int id)
+        public async Task<ActionResult<ResponseDto<ReservationDto>>> Delete(Guid id)
         {
             var response = await _reservationService.DeleteAsync(id);
             return StatusCode(response.StatusCode, response);

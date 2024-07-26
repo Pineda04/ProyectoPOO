@@ -40,7 +40,7 @@ namespace ProyectoViajes.API.Services
             };
         }
 
-        public async Task<ResponseDto<ReservationDto>> GetReservationByIdAsync(int id)
+        public async Task<ResponseDto<ReservationDto>> GetReservationByIdAsync(Guid id)
         {
             var reservation = await _context.Reservations.FindAsync(id);
 
@@ -109,7 +109,7 @@ namespace ProyectoViajes.API.Services
             };
         }
 
-        public async Task<ResponseDto<ReservationDto>> EditAsync(EditReservationDto dto, int id)
+        public async Task<ResponseDto<ReservationDto>> EditAsync(EditReservationDto dto, Guid id)
         {
             var reservation = await _context.Reservations.FindAsync(id);
 
@@ -153,7 +153,7 @@ namespace ProyectoViajes.API.Services
             };
         }
 
-        public async Task<ResponseDto<ReservationDto>> DeleteAsync(int id)
+        public async Task<ResponseDto<ReservationDto>> DeleteAsync(Guid id)
         {
             var reservation = await _context.Reservations.FindAsync(id);
 

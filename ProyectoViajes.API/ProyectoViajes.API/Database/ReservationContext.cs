@@ -12,23 +12,21 @@ namespace ProyectoViajes.API.Database
             {
             }
 
-           
-            public DbSet<PaymentEntity> Payments { get; set; }
 
-            
-            public DbSet<ReservationEntity> Reservations { get; set; }
-
-            public DbSet<AssessmentEntity> Assessments { get; set; }
+        public DbSet<PaymentEntity> Payments { get; set; }
+        public DbSet<ReservationEntity> Reservations { get; set; }
+        public DbSet<AssessmentEntity> Assessments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
             {
                 base.OnModelCreating(modelBuilder);
 
-                modelBuilder.Entity<ReservationEntity>()
-               .HasMany(r => r.Payments)
-               .WithOne(p => p.Reservation)
-               .HasForeignKey(p => p.ReservationId);
+            modelBuilder.Entity<ReservationEntity>()
+           .HasMany(r => r.Payments)
+           .WithOne(p => p.Reservation)
+           .HasForeignKey(p => p.ReservationId);
 
+             
         }
         }
     }

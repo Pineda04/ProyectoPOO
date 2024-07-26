@@ -9,7 +9,6 @@ namespace ProyectoViajes.API.Services
 {
     public class PaymentService : IPaymentService
     {
-
         private readonly ApplicationDbContext _context;
 
         public PaymentService(ApplicationDbContext context)
@@ -22,7 +21,7 @@ namespace ProyectoViajes.API.Services
             var payments = await _context.Payments
                 .Select(p => new PaymentDto
                 {
-                    Id = p.PaymentId,
+                    PaymentId = p.PaymentId,
                     ReservationId = p.ReservationId,
                     Amount = p.Amount,
                     PaymentDate = p.PaymentDate,
@@ -35,8 +34,7 @@ namespace ProyectoViajes.API.Services
                 StatusCode = 200,
                 Status = true,
                 Data = payments,
-                Message = "Payments retrieved successfully",
-                
+                Message = "Success"
             };
         }
 
@@ -50,14 +48,13 @@ namespace ProyectoViajes.API.Services
                 {
                     StatusCode = 404,
                     Status = false,
-                    Message = "Payment not found",
-                    
+                    Message = "Payment not found"
                 };
             }
 
             var paymentDto = new PaymentDto
             {
-                Id = payment.PaymentId,
+                PaymentId = payment.PaymentId,
                 ReservationId = payment.ReservationId,
                 Amount = payment.Amount,
                 PaymentDate = payment.PaymentDate,
@@ -70,8 +67,7 @@ namespace ProyectoViajes.API.Services
                 StatusCode = 200,
                 Status = true,
                 Data = paymentDto,
-                Message = "Payment retrieved successfully",
-               
+                Message = "Success"
             };
         }
 
@@ -79,7 +75,7 @@ namespace ProyectoViajes.API.Services
         {
             var payment = new PaymentEntity
             {
-                PaymentId = Guid.NewGuid(),   
+                PaymentId = Guid.NewGuid(),
                 ReservationId = dto.ReservationId,
                 Amount = dto.Amount,
                 PaymentDate = dto.PaymentDate,
@@ -92,7 +88,7 @@ namespace ProyectoViajes.API.Services
 
             var paymentDto = new PaymentDto
             {
-                Id = payment.PaymentId,
+                PaymentId = payment.PaymentId,
                 ReservationId = payment.ReservationId,
                 Amount = payment.Amount,
                 PaymentDate = payment.PaymentDate,
@@ -105,8 +101,7 @@ namespace ProyectoViajes.API.Services
                 StatusCode = 201,
                 Status = true,
                 Data = paymentDto,
-                Message = "Payment created successfully",
-                
+                Message = "Payment created successfully"
             };
         }
 
@@ -120,8 +115,7 @@ namespace ProyectoViajes.API.Services
                 {
                     StatusCode = 404,
                     Status = false,
-                    Message = "Payment not found",
-                    
+                    Message = "Payment not found"
                 };
             }
 
@@ -136,7 +130,7 @@ namespace ProyectoViajes.API.Services
 
             var paymentDto = new PaymentDto
             {
-                Id = payment.PaymentId,
+                PaymentId = payment.PaymentId,
                 ReservationId = payment.ReservationId,
                 Amount = payment.Amount,
                 PaymentDate = payment.PaymentDate,
@@ -149,8 +143,7 @@ namespace ProyectoViajes.API.Services
                 StatusCode = 200,
                 Status = true,
                 Data = paymentDto,
-                Message = "Payment updated successfully",
-                
+                Message = "Payment updated successfully"
             };
         }
 
@@ -164,8 +157,7 @@ namespace ProyectoViajes.API.Services
                 {
                     StatusCode = 404,
                     Status = false,
-                    Message = "Payment not found",
-                    
+                    Message = "Payment not found"
                 };
             }
 
@@ -176,8 +168,7 @@ namespace ProyectoViajes.API.Services
             {
                 StatusCode = 200,
                 Status = true,
-                Message = "Payment deleted successfully",
-                
+                Message = "Payment deleted successfully"
             };
         }
     }
