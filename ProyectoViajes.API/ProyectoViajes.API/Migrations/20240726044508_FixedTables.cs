@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ProyectoViajes.API.Migrations
 {
     /// <inheritdoc />
-    public partial class AddTableAgency : Migration
+    public partial class FixedTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -124,6 +124,78 @@ namespace ProyectoViajes.API.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "assessments",
+                schema: "dbo",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    user_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    package_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    rating = table.Column<int>(type: "int", nullable: false),
+                    comment = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    rating_date = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_assessments", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_assessments_travel_package_package_id",
+                        column: x => x.package_id,
+                        principalSchema: "dbo",
+                        principalTable: "travel_package",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "reservations",
+                schema: "dbo",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    user_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    package_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    reservation_date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    total_paid = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_reservations", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_reservations_travel_package_package_id",
+                        column: x => x.package_id,
+                        principalSchema: "dbo",
+                        principalTable: "travel_package",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "payments",
+                schema: "dbo",
+                columns: table => new
+                {
+                    PaymentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ReservationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PaymentMethod = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_payments", x => x.PaymentId);
+                    table.ForeignKey(
+                        name: "FK_payments_reservations_ReservationId",
+                        column: x => x.ReservationId,
+                        principalSchema: "dbo",
+                        principalTable: "reservations",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_activity_travel_package_id",
                 schema: "dbo",
@@ -131,10 +203,28 @@ namespace ProyectoViajes.API.Migrations
                 column: "travel_package_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_assessments_package_id",
+                schema: "dbo",
+                table: "assessments",
+                column: "package_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_payments_ReservationId",
+                schema: "dbo",
+                table: "payments",
+                column: "ReservationId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_point_interest_destination_id",
                 schema: "dbo",
                 table: "point_interest",
                 column: "destination_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_reservations_package_id",
+                schema: "dbo",
+                table: "reservations",
+                column: "package_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_travel_package_agency_id",
@@ -157,7 +247,19 @@ namespace ProyectoViajes.API.Migrations
                 schema: "dbo");
 
             migrationBuilder.DropTable(
+                name: "assessments",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
+                name: "payments",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
                 name: "point_interest",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
+                name: "reservations",
                 schema: "dbo");
 
             migrationBuilder.DropTable(

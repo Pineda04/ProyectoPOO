@@ -89,6 +89,42 @@ namespace ProyectoViajes.API.Migrations
                     b.ToTable("agency", "dbo");
                 });
 
+            modelBuilder.Entity("ProyectoViajes.API.Database.Entities.AssessmentEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasColumnName("comment");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("rating_date");
+
+                    b.Property<Guid>("PackageId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("package_id");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int")
+                        .HasColumnName("rating");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PackageId");
+
+                    b.ToTable("assessments", "dbo");
+                });
+
             modelBuilder.Entity("ProyectoViajes.API.Database.Entities.DestinationEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -118,6 +154,38 @@ namespace ProyectoViajes.API.Migrations
                     b.ToTable("destination", "dbo");
                 });
 
+            modelBuilder.Entity("ProyectoViajes.API.Database.Entities.PaymentEntity", b =>
+                {
+                    b.Property<Guid>("PaymentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<Guid>("ReservationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("PaymentId");
+
+                    b.HasIndex("ReservationId");
+
+                    b.ToTable("payments", "dbo");
+                });
+
             modelBuilder.Entity("ProyectoViajes.API.Database.Entities.PointInterestEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -145,6 +213,41 @@ namespace ProyectoViajes.API.Migrations
                     b.HasIndex("DestinationId");
 
                     b.ToTable("point_interest", "dbo");
+                });
+
+            modelBuilder.Entity("ProyectoViajes.API.Database.Entities.ReservationEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("PackageId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("package_id");
+
+                    b.Property<DateTime>("ReservationDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("reservation_date");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("status");
+
+                    b.Property<decimal>("TotalPaid")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("total_paid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PackageId");
+
+                    b.ToTable("reservations", "dbo");
                 });
 
             modelBuilder.Entity("ProyectoViajes.API.Database.Entities.TravelPackageEntity", b =>
@@ -209,6 +312,28 @@ namespace ProyectoViajes.API.Migrations
                     b.Navigation("TravelPackage");
                 });
 
+            modelBuilder.Entity("ProyectoViajes.API.Database.Entities.AssessmentEntity", b =>
+                {
+                    b.HasOne("ProyectoViajes.API.Database.Entities.TravelPackageEntity", "TravelPackage")
+                        .WithMany("Assessments")
+                        .HasForeignKey("PackageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TravelPackage");
+                });
+
+            modelBuilder.Entity("ProyectoViajes.API.Database.Entities.PaymentEntity", b =>
+                {
+                    b.HasOne("ProyectoViajes.API.Database.Entities.ReservationEntity", "Reservation")
+                        .WithMany("Payments")
+                        .HasForeignKey("ReservationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Reservation");
+                });
+
             modelBuilder.Entity("ProyectoViajes.API.Database.Entities.PointInterestEntity", b =>
                 {
                     b.HasOne("ProyectoViajes.API.Database.Entities.DestinationEntity", "Destination")
@@ -218,6 +343,17 @@ namespace ProyectoViajes.API.Migrations
                         .IsRequired();
 
                     b.Navigation("Destination");
+                });
+
+            modelBuilder.Entity("ProyectoViajes.API.Database.Entities.ReservationEntity", b =>
+                {
+                    b.HasOne("ProyectoViajes.API.Database.Entities.TravelPackageEntity", "TravelPackage")
+                        .WithMany("Reservations")
+                        .HasForeignKey("PackageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TravelPackage");
                 });
 
             modelBuilder.Entity("ProyectoViajes.API.Database.Entities.TravelPackageEntity", b =>
@@ -251,9 +387,18 @@ namespace ProyectoViajes.API.Migrations
                     b.Navigation("TravelPackages");
                 });
 
+            modelBuilder.Entity("ProyectoViajes.API.Database.Entities.ReservationEntity", b =>
+                {
+                    b.Navigation("Payments");
+                });
+
             modelBuilder.Entity("ProyectoViajes.API.Database.Entities.TravelPackageEntity", b =>
                 {
                     b.Navigation("Activities");
+
+                    b.Navigation("Assessments");
+
+                    b.Navigation("Reservations");
                 });
 #pragma warning restore 612, 618
         }

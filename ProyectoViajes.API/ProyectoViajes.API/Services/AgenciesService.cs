@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ProyectoViajes.API.Database;
 using ProyectoViajes.API.Database.Entities;
 using ProyectoViajes.API.Dtos.Agencies;
-using ProyectoViajes.API.Dtos.Common;
+using ProyectoViajes.API.Dtos.common;
 using ProyectoViajes.API.Services.Interfaces;
 
 namespace ProyectoViajes.API.Services

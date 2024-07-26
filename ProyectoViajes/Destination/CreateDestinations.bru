@@ -1,0 +1,20 @@
+meta {
+  name: CreateDestinations
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{PATHV}}/destinations
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "París",
+    "description": "La capital de Francia, conocida por su arquitectura icónica, museos y gastronomía. Entre sus principales atracciones se encuentran la Torre Eiffel, el Louvre y Notre-Dame.",
+    "location": "Francia"
+  }
+  
+}

@@ -59,6 +59,11 @@ namespace ProyectoViajes.API.Database.Entities
         [ForeignKey(nameof(DestinationId))]
         public virtual DestinationEntity Destination { get; set; }
 
-        // TODO : las dos propiedades de navegación para representar la relación entre reserva y valoración
+        // Reserva 
+        public virtual IEnumerable<ReservationEntity> Reservations { get; set; }
+
+        // Valoración
+        public virtual IEnumerable<AssessmentEntity> Assessments { get; set; }
+
     }
 }

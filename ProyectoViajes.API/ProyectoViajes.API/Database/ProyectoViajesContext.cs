@@ -42,5 +42,8 @@ namespace ProyectoViajes.API.Database
         public DbSet<TravelPackageEntity> TravelPackages { get; set; }
         public DbSet<ActivityEntity> Activities { get; set; }
         public DbSet<PointInterestEntity> PoinstInterest { get; set; }
+        public DbSet<PaymentEntity> Payments { get; set; }
+        public DbSet<ReservationEntity> Reservations { get; set; }
+        public DbSet<AssessmentEntity> Assessments { get; set; }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using ProyectoViajes.API.Dtos.Agencies;
-using ProyectoViajes.API.Dtos.Common;
+using ProyectoViajes.API.Dtos.common;
 
 namespace ProyectoViajes.API.Services.Interfaces
 {
