@@ -1,5 +1,5 @@
 ﻿using ProyectoViajes.API.Dtos.PointsInterest;
-using ProyectoViajes.API.Dtos.common;
+using ProyectoViajes.API.Dtos.Common;
 
 namespace ProyectoViajes.API.Services.Interfaces
 {

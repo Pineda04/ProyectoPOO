@@ -4,7 +4,7 @@ using ProyectoViajes.API.Database;
 using ProyectoViajes.API.Dtos.Activities;
 using ProyectoViajes.API.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using ProyectoViajes.API.Dtos.common;
+using ProyectoViajes.API.Dtos.Common;
 
 namespace ProyectoViajes.API.Services
 {

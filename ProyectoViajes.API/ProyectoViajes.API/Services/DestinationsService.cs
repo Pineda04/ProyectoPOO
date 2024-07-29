@@ -4,7 +4,7 @@ using ProyectoViajes.API.Database;
 using ProyectoViajes.API.Database.Entities;
 using ProyectoViajes.API.Dtos.Destinations;
 using ProyectoViajes.API.Services.Interfaces;
-using ProyectoViajes.API.Dtos.common;
+using ProyectoViajes.API.Dtos.Common;
 
 namespace ProyectoViajes.API.Services
 {

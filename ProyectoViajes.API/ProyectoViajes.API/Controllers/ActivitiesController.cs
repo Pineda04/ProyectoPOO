@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProyectoViajes.API.Dtos.Activities;
-using ProyectoViajes.API.Dtos.common;
+using ProyectoViajes.API.Dtos.Common;
 using ProyectoViajes.API.Services.Interfaces;
 
 namespace ProyectoViajes.API.Controllers

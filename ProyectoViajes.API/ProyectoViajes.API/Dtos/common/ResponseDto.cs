@@ -1,15 +1,13 @@
-﻿using Newtonsoft.Json;
-namespace ProyectoViajes.API.Dtos.common
+﻿namespace ProyectoViajes.API.Dtos.Common
 {
+    public class ResponseDto <T>
+    {
+        public T Data { get; set; }
 
-    public class ResponseDto<T>
-     {
-     public T Data { get; set; }
-    public string Message { get; set; }
+        public string Message { get; set; }
 
-    [Newtonsoft.Json.JsonIgnore]
+        public int StatusCode { get; set; }
 
-    public int StatusCode { get; set; }
-    public bool Status { get; set; }
-}
+        public bool Status { get; set; }
+    }
 }
