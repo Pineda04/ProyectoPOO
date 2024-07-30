@@ -16,6 +16,7 @@ namespace ProyectoViajes.API.Controllers
             _assessmentService = assessmentService;
         }
 
+        // Para traer todo
         [HttpGet]
         public async Task<ActionResult<ResponseDto<List<AssessmentDto>>>> GetAll()
         {
@@ -23,6 +24,7 @@ namespace ProyectoViajes.API.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        // Traer por id 
         [HttpGet("{id}")]
         public async Task<ActionResult<ResponseDto<AssessmentDto>>> Get(Guid id)
         {
@@ -30,6 +32,7 @@ namespace ProyectoViajes.API.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        // Crear
         [HttpPost]
         public async Task<ActionResult<ResponseDto<AssessmentDto>>> Create(CreateAssessmentDto dto)
         {
@@ -37,6 +40,7 @@ namespace ProyectoViajes.API.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        // Editar 
         [HttpPut("{id}")]
         public async Task<ActionResult<ResponseDto<AssessmentDto>>> Edit(EditAssessmentDto dto, Guid id)
         {
@@ -44,6 +48,7 @@ namespace ProyectoViajes.API.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        // Eliminar
         [HttpDelete("{id}")]
         public async Task<ActionResult<ResponseDto<AssessmentDto>>> Delete(Guid id)
         {

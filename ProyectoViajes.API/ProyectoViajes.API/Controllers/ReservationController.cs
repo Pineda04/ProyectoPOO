@@ -18,6 +18,7 @@ namespace ProyectoViajes.API.Controllers
             this._reservationService = reservationService;
         }
 
+        // Para traer todos
         [HttpGet]
         public async Task<ActionResult<ResponseDto<List<ReservationDto>>>> GetAll()
         {
@@ -25,6 +26,7 @@ namespace ProyectoViajes.API.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        // Traer por id 
         [HttpGet("{id}")]
         public async Task<ActionResult<ResponseDto<ReservationDto>>> Get(Guid id)
         {
@@ -32,6 +34,7 @@ namespace ProyectoViajes.API.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        // Crear
         [HttpPost]
         public async Task<ActionResult<ResponseDto<ReservationDto>>> Create(CreateReservationDto dto)
         {
@@ -39,6 +42,7 @@ namespace ProyectoViajes.API.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        // Editar
         [HttpPut("{id}")]
         public async Task<ActionResult<ResponseDto<ReservationDto>>> Edit(EditReservationDto dto, Guid id)
         {
@@ -46,6 +50,7 @@ namespace ProyectoViajes.API.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        // Eliminar
         [HttpDelete("{id}")]
         public async Task<ActionResult<ResponseDto<ReservationDto>>> Delete(Guid id)
         {

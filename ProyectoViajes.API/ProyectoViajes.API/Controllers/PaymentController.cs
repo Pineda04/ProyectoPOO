@@ -16,6 +16,7 @@ namespace ProyectoViajes.API.Controllers
             _paymentService = paymentService;
         }
 
+        // Para traer todo
         [HttpGet]
         public async Task<ActionResult<ResponseDto<List<PaymentDto>>>> GetAll()
         {
@@ -23,6 +24,7 @@ namespace ProyectoViajes.API.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        // Traer por id
         [HttpGet("{id}")]
         public async Task<ActionResult<ResponseDto<PaymentDto>>> Get(Guid id)
         {
@@ -30,6 +32,7 @@ namespace ProyectoViajes.API.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        // Crear
         [HttpPost]
         public async Task<ActionResult<ResponseDto<PaymentDto>>> Create(CreatePaymentDto dto)
         {
@@ -37,6 +40,7 @@ namespace ProyectoViajes.API.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        // Editar
         [HttpPut("{id}")]
         public async Task<ActionResult<ResponseDto<PaymentDto>>> Edit(EditPaymentDto dto, Guid id)
         {
@@ -44,6 +48,7 @@ namespace ProyectoViajes.API.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        // Eliminar
         [HttpDelete("{id}")]
         public async Task<ActionResult<ResponseDto<PaymentDto>>> Delete(Guid id)
         {

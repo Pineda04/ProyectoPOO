@@ -5,7 +5,6 @@ namespace ProyectoViajes.API.Services.Interfaces
 {
     public interface IPaymentService
     {
-
         Task<ResponseDto<List<PaymentDto>>> GetPaymentsListAsync();
 
         Task<ResponseDto<PaymentDto>> GetPaymentByIdAsync(Guid id);
@@ -15,6 +14,5 @@ namespace ProyectoViajes.API.Services.Interfaces
         Task<ResponseDto<PaymentDto>> EditAsync(EditPaymentDto dto, Guid id);
 
         Task<ResponseDto<PaymentDto>> DeleteAsync(Guid id);
-
     }
 }
