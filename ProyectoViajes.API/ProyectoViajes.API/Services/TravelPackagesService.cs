@@ -1,10 +1,11 @@
-﻿using AutoMapper;
-using ProyectoViajes.API.Database.Entities;
-using ProyectoViajes.API.Database;
-using ProyectoViajes.API.Dtos.TravelPackages;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using ProyectoViajes.API.Services.Interfaces;
+using ProyectoViajes.API.Constants;
+using ProyectoViajes.API.Database;
+using ProyectoViajes.API.Database.Entities;
 using ProyectoViajes.API.Dtos.Common;
+using ProyectoViajes.API.Dtos.TravelPackages;
+using ProyectoViajes.API.Services.Interfaces;
 
 namespace ProyectoViajes.API.Services
 {
@@ -21,125 +22,111 @@ namespace ProyectoViajes.API.Services
 
         public async Task<ResponseDto<List<TravelPackageDto>>> GetTravelPackagesListAsync()
         {
-            var travelPackagesEntity = await _context.TravelPackages
-                .Include(tp => tp.Agency)
-                .Include(tp => tp.Destination)
-                .Include(tp => tp.Activities)
-                .ToListAsync();
+            var packagesEntity = await _context.TravelPackages.Include(tp => tp.Activities).ToListAsync();
 
-            var travelPackagesDtos = _mapper.Map<List<TravelPackageDto>>(travelPackagesEntity);
+            var packagesDto = _mapper.Map<List<TravelPackageDto>>(packagesEntity);
 
             return new ResponseDto<List<TravelPackageDto>>
             {
                 StatusCode = 200,
                 Status = true,
-                Message = "Lista de paquetes de viaje obtenida correctamente",
-                Data = travelPackagesDtos
+                Message = MessagesConstant.RECORDS_FOUND,
+                Data = packagesDto
             };
         }
 
         public async Task<ResponseDto<TravelPackageDto>> GetTravelPackageByIdAsync(Guid id)
         {
-            var travelPackageEntity = await _context.TravelPackages
-                .Include(tp => tp.Agency)
-                .Include(tp => tp.Destination)
-                .Include(tp => tp.Activities)
-                .FirstOrDefaultAsync(tp => tp.Id == id);
+            var packagesEntity = await _context.TravelPackages.Include(tp => tp.Activities).FirstOrDefaultAsync(tp => tp.Id == id);
 
-            if (travelPackageEntity == null)
+            if (packagesEntity == null)
             {
                 return new ResponseDto<TravelPackageDto>
                 {
                     StatusCode = 404,
                     Status = false,
-                    Message = "No se encontró el paquete de viaje"
+                    Message = MessagesConstant.RECORD_NOT_FOUND
                 };
             }
 
-            var travelPackageDto = _mapper.Map<TravelPackageDto>(travelPackageEntity);
+            var packagesDto = _mapper.Map<TravelPackageDto>(packagesEntity);
 
             return new ResponseDto<TravelPackageDto>
             {
                 StatusCode = 200,
                 Status = true,
-                Message = "Registro encontrado correctamente",
-                Data = travelPackageDto
+                Message = MessagesConstant.RECORD_FOUND,
+                Data = packagesDto
             };
         }
 
-        public async Task<ResponseDto<TravelPackageDto>> CreateAsync(TravelPackageCreateDto dto)
+        public async Task<ResponseDto<TravelPackageDto>> CreateTravelPackageAsync(TravelPackageCreateDto dto)
         {
-            var travelPackageEntity = _mapper.Map<TravelPackageEntity>(dto);
+            var packagesEntity = _mapper.Map<TravelPackageEntity>(dto);
 
-            _context.TravelPackages.Add(travelPackageEntity);
+            _context.TravelPackages.Add(packagesEntity);
+
             await _context.SaveChangesAsync();
 
-            var travelPackageDto = _mapper.Map<TravelPackageDto>(travelPackageEntity);
+            var packagesDto = _mapper.Map<TravelPackageDto>(packagesEntity);
 
             return new ResponseDto<TravelPackageDto>
             {
                 StatusCode = 201,
                 Status = true,
-                Message = "Registro creado exitosamente",
-                Data = travelPackageDto
+                Message = MessagesConstant.CREATE_SUCCESS,
+                Data = packagesDto
             };
         }
 
-        public async Task<ResponseDto<TravelPackageDto>> EditAsync(TravelPackageEditDto dto, Guid id)
+        public async Task<ResponseDto<TravelPackageDto>> EditTravelPackageAsync(TravelPackageEditDto dto, Guid id)
         {
-            var travelPackageEntity = await _context.TravelPackages
-                .Include(tp => tp.Activities)
-                .FirstOrDefaultAsync(tp => tp.Id == id);
+            var packagesEntity = await _context.TravelPackages.Include(tp => tp.Activities).FirstOrDefaultAsync(tp => tp.Id == id);
 
-            if (travelPackageEntity == null)
-            {
-                return new ResponseDto<TravelPackageDto>
-                {
+            if(packagesEntity == null){
+                return new ResponseDto<TravelPackageDto>{
                     StatusCode = 404,
                     Status = false,
-                    Message = "No se encontró el registro"
+                    Message = MessagesConstant.UPDATE_ERROR
                 };
-            }
+            };
 
-            _mapper.Map(dto, travelPackageEntity);
+            _mapper.Map(dto, packagesEntity);
 
-            _context.TravelPackages.Update(travelPackageEntity);
+            _context.TravelPackages.Update(packagesEntity);
+
             await _context.SaveChangesAsync();
 
-            var travelPackageDto = _mapper.Map<TravelPackageDto>(travelPackageEntity);
+            var packagesDto = _mapper.Map<TravelPackageDto>(packagesEntity);
 
-            return new ResponseDto<TravelPackageDto>
-            {
+            return new ResponseDto<TravelPackageDto>{
                 StatusCode = 200,
                 Status = true,
-                Message = "Registro modificado exitosamente",
-                Data = travelPackageDto
+                Message = MessagesConstant.UPDATE_SUCCESS,
+                Data = packagesDto
             };
         }
 
-        public async Task<ResponseDto<TravelPackageDto>> DeleteAsync(Guid id)
+        public async Task<ResponseDto<TravelPackageDto>> DeleteTravelPackageAsync(Guid id)
         {
-            var travelPackageEntity = await _context.TravelPackages
-                .FirstOrDefaultAsync(tp => tp.Id == id);
-
-            if (travelPackageEntity == null)
-            {
-                return new ResponseDto<TravelPackageDto>
-                {
+            var packagesEntity = await _context.TravelPackages.Include(tp => tp.Activities).FirstOrDefaultAsync(tp => tp.Id == id);
+            
+            if(packagesEntity == null){
+                return new ResponseDto<TravelPackageDto>{
                     StatusCode = 404,
                     Status = false,
-                    Message = "No se encontró el registro"
+                    Message = MessagesConstant.DELETE_ERROR
                 };
             }
 
-            _context.TravelPackages.Remove(travelPackageEntity);
+            _context.TravelPackages.Remove(packagesEntity);
+
             await _context.SaveChangesAsync();
 
-            return new ResponseDto<TravelPackageDto>
-            {
+            return new ResponseDto<TravelPackageDto>{
                 StatusCode = 200,
                 Status = true,
-                Message = "Registro borrado correctamente"
+                Message = MessagesConstant.DELETE_SUCCESS
             };
         }
     }

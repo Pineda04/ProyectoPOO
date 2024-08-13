@@ -1,4 +1,4 @@
-﻿using ProyectoViajes.API.Dtos.Common;
+using ProyectoViajes.API.Dtos.Common;
 using ProyectoViajes.API.Dtos.Destinations;
 
 namespace ProyectoViajes.API.Services.Interfaces
@@ -9,10 +9,10 @@ namespace ProyectoViajes.API.Services.Interfaces
 
         Task<ResponseDto<DestinationDto>> GetDestinationByIdAsync(Guid id);
 
-        Task<ResponseDto<DestinationDto>> CreateAsync(DestinationCreateDto dto);
+        Task<ResponseDto<DestinationDto>> CreateDestinationAsync(DestinationCreateDto dto);
 
-        Task<ResponseDto<DestinationDto>> EditAsync(DestinationEditDto dto, Guid id);
+        Task<ResponseDto<DestinationDto>> EditDestinationAsync(DestinationEditDto dto, Guid id);
 
-        Task<ResponseDto<DestinationDto>> DeleteAsync(Guid id);
+        Task<ResponseDto<DestinationDto>> DeleteDestinationAsync(Guid id);
     }
 }

@@ -14,15 +14,15 @@ startup.Configure(app, app.Environment);
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+
     try
     {
         var context = services.GetRequiredService<ProyectoViajesContext>();
     }
     catch (Exception e)
     {
-        var logger = loggerFactory.CreateLogger<Program>();
-        logger.LogError(e, "Error al ejecutar el seed de datos");
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(e, "Error al ejecutar la base de datos.");
     }
 }
 

@@ -1,6 +1,7 @@
-﻿namespace ProyectoViajes.API.Dtos.TravelPackages
+namespace ProyectoViajes.API.Dtos.TravelPackages
 {
     public class TravelPackageEditDto : TravelPackageCreateDto
     {
+        
     }
 }

@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProyectoViajes.API.Database.Entities
@@ -18,11 +18,11 @@ namespace ProyectoViajes.API.Database.Entities
         public string Name { get; set; }
 
         // Descripción
-        [StringLength (500)]
+        [StringLength(500)]
         [Column("description")]
         public string Description { get; set; }
 
-        // Para la relación con Destino
+        // Destino Id
         [Required]
         [Column("destination_id")]
         public Guid DestinationId { get; set; }

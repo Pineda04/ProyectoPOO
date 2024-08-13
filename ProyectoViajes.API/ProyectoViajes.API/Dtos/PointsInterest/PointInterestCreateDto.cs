@@ -1,19 +1,22 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProyectoViajes.API.Dtos.PointsInterest
 {
     public class PointInterestCreateDto
     {
-        [Display(Name = "Nombre")]
-        [Required(ErrorMessage = "El {0} es requerido.")]
-        [StringLength(100, ErrorMessage = "El {0} debe tener menos de {1} caracteres.")]
+        // Nombre
+        [Display(Name = "nombre")]
+        [StringLength(100, ErrorMessage = "El {0} del punto de interes debe tener menos de {1} caracteres.")]
+        [Required(ErrorMessage = "El {0} del punto de interes es requerido.")]
         public string Name { get; set; }
 
-        [Display(Name = "Descripción")]
+        // Descripción
+        [Display(Name = "descripción")]
         [StringLength(500, ErrorMessage = "La {0} debe tener menos de {1} caracteres.")]
         public string Description { get; set; }
 
-        [Display(Name = "Destino")]
+        // Destino Id
+        [Display(Name = "id del destino")]
         [Required(ErrorMessage = "El {0} es requerido.")]
         public Guid DestinationId { get; set; }
     }

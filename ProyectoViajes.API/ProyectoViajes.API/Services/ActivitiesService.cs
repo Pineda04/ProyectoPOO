@@ -1,10 +1,11 @@
-﻿using AutoMapper;
-using ProyectoViajes.API.Database.Entities;
-using ProyectoViajes.API.Database;
-using ProyectoViajes.API.Dtos.Activities;
-using ProyectoViajes.API.Services.Interfaces;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using ProyectoViajes.API.Constants;
+using ProyectoViajes.API.Database;
+using ProyectoViajes.API.Database.Entities;
+using ProyectoViajes.API.Dtos.Activities;
 using ProyectoViajes.API.Dtos.Common;
+using ProyectoViajes.API.Services.Interfaces;
 
 namespace ProyectoViajes.API.Services
 {
@@ -12,129 +13,114 @@ namespace ProyectoViajes.API.Services
     {
         private readonly ProyectoViajesContext _context;
         private readonly IMapper _mapper;
-
         public ActivitiesService(ProyectoViajesContext context, IMapper mapper)
         {
-            _context = context;
             _mapper = mapper;
+            _context = context;
         }
 
         public async Task<ResponseDto<List<ActivityDto>>> GetActivitiesListAsync()
         {
-            var activitiesEntity = await _context.Activities
-                .Include(a => a.TravelPackage)
-                .ToListAsync();
+            var activitiesEntity = await _context.Activities.ToListAsync();
 
-            var activitiesDtos = _mapper.Map<List<ActivityDto>>(activitiesEntity);
+            var activitiesDto = _mapper.Map<List<ActivityDto>>(activitiesEntity);
 
-            return new ResponseDto<List<ActivityDto>>
-            {
+            return new ResponseDto<List<ActivityDto>>{
                 StatusCode = 200,
                 Status = true,
-                Message = "Lista de actividades obtenida correctamente",
-                Data = activitiesDtos
+                Message = MessagesConstant.RECORDS_FOUND,
+                Data = activitiesDto
             };
         }
 
         public async Task<ResponseDto<ActivityDto>> GetActivityByIdAsync(Guid id)
         {
-            var activityEntity = await _context.Activities
-                .Include(a => a.TravelPackage)
-                .FirstOrDefaultAsync(a => a.Id == id);
+            var activitiesEntity = await _context.Activities.FirstOrDefaultAsync(a => a.Id == id);
 
-            if (activityEntity == null)
-            {
-                return new ResponseDto<ActivityDto>
-                {
+            if(activitiesEntity == null){
+                return new ResponseDto<ActivityDto>{
                     StatusCode = 404,
                     Status = false,
-                    Message = "No se encontró la actividad"
+                    Message = MessagesConstant.RECORD_NOT_FOUND
                 };
             }
 
-            var activityDto = _mapper.Map<ActivityDto>(activityEntity);
+            var activitiesDto = _mapper.Map<ActivityDto>(activitiesEntity);
 
-            return new ResponseDto<ActivityDto>
-            {
+            return new ResponseDto<ActivityDto>{
                 StatusCode = 200,
                 Status = true,
-                Message = "Registro encontrado correctamente",
-                Data = activityDto
+                Message = MessagesConstant.RECORD_FOUND,
+                Data = activitiesDto
             };
         }
-
-        public async Task<ResponseDto<ActivityDto>> CreateAsync(ActivityCreateDto dto)
+        
+        public async Task<ResponseDto<ActivityDto>> CreateActivityAsync(ActivityCreateDto dto)
         {
-            var activityEntity = _mapper.Map<ActivityEntity>(dto);
+            var activitiesEntity = _mapper.Map<ActivityEntity>(dto);
 
-            _context.Activities.Add(activityEntity);
+            _context.Activities.Add(activitiesEntity);
+
             await _context.SaveChangesAsync();
 
-            var activityDto = _mapper.Map<ActivityDto>(activityEntity);
+            var activitiesDto = _mapper.Map<ActivityDto>(activitiesEntity);
 
-            return new ResponseDto<ActivityDto>
-            {
+            return new ResponseDto<ActivityDto>{
                 StatusCode = 201,
                 Status = true,
-                Message = "Registro creado exitosamente",
-                Data = activityDto
+                Message = MessagesConstant.CREATE_SUCCESS,
+                Data = activitiesDto
             };
         }
 
-        public async Task<ResponseDto<ActivityDto>> EditAsync(ActivityEditDto dto, Guid id)
+        public async Task<ResponseDto<ActivityDto>> EditActivityAsync(ActivityEditDto dto, Guid id)
         {
-            var activityEntity = await _context.Activities
-                .FirstOrDefaultAsync(a => a.Id == id);
+            var activitiesEntity = await _context.Activities.FirstOrDefaultAsync(a => a.Id == id);
 
-            if (activityEntity == null)
-            {
-                return new ResponseDto<ActivityDto>
-                {
+            if(activitiesEntity == null){
+                return new ResponseDto<ActivityDto>{
                     StatusCode = 404,
                     Status = false,
-                    Message = "No se encontró el registro"
+                    Message = MessagesConstant.UPDATE_ERROR,
                 };
             }
 
-            _mapper.Map(dto, activityEntity);
+            _mapper.Map(dto, activitiesEntity);
 
-            _context.Activities.Update(activityEntity);
+            _context.Activities.Update(activitiesEntity);
+
             await _context.SaveChangesAsync();
 
-            var activityDto = _mapper.Map<ActivityDto>(activityEntity);
+            var activitiesDto = _mapper.Map<ActivityDto>(activitiesEntity);
 
-            return new ResponseDto<ActivityDto>
-            {
+            return new ResponseDto<ActivityDto>{
                 StatusCode = 200,
                 Status = true,
-                Message = "Registro modificado exitosamente",
-                Data = activityDto
+                Message = MessagesConstant.UPDATE_SUCCESS,
+                Data = activitiesDto
             };
         }
 
-        public async Task<ResponseDto<ActivityDto>> DeleteAsync(Guid id)
+        public async Task<ResponseDto<ActivityDto>> DeleteActivityAsync(Guid id)
         {
-            var activityEntity = await _context.Activities
-                .FirstOrDefaultAsync(a => a.Id == id);
+            var activitiesEntity = await _context.Activities.FirstOrDefaultAsync(a => a.Id == id);
 
-            if (activityEntity == null)
-            {
-                return new ResponseDto<ActivityDto>
-                {
+            if(activitiesEntity == null){
+                return new ResponseDto<ActivityDto>{
                     StatusCode = 404,
                     Status = false,
-                    Message = "No se encontró el registro"
+                    Message = MessagesConstant.DELETE_ERROR
                 };
             }
 
-            _context.Activities.Remove(activityEntity);
+            _context.Activities.Remove(activitiesEntity);
+
             await _context.SaveChangesAsync();
 
-            return new ResponseDto<ActivityDto>
-            {
+            return new ResponseDto<ActivityDto>{
                 StatusCode = 200,
                 Status = true,
-                Message = "Registro borrado correctamente"
+                Message = MessagesConstant.DELETE_SUCCESS
             };
         }
     }

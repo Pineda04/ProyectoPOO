@@ -1,10 +1,11 @@
-﻿using AutoMapper;
-using ProyectoViajes.API.Database.Entities;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using ProyectoViajes.API.Constants;
 using ProyectoViajes.API.Database;
+using ProyectoViajes.API.Database.Entities;
+using ProyectoViajes.API.Dtos.Common;
 using ProyectoViajes.API.Dtos.PointsInterest;
 using ProyectoViajes.API.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using ProyectoViajes.API.Dtos.Common;
 
 namespace ProyectoViajes.API.Services
 {
@@ -19,116 +20,108 @@ namespace ProyectoViajes.API.Services
             _mapper = mapper;
         }
 
-        public async Task<ResponseDto<List<PointInterestDto>>> GetPointsInterestListAsync()
+        public async Task<ResponseDto<List<PointInterestDto>>> GetPuntosDeInteresListAsync()
         {
-            var pointsInterestsEntity = await _context.PoinstInterest.ToListAsync();
-            var pointInterestEntities = await _context.PoinstInterest.ToListAsync();
-            var pointsInterestsDtos = _mapper.Map<List<PointInterestDto>>(pointsInterestsEntity);
+            var pointsEntity = await _context.PointsInterest.ToListAsync();
 
-            return new ResponseDto<List<PointInterestDto>>
-            {
-                StatusCode = 200,
-                Status = true,
-                Message = "Lista de puntos de interés obtenidos correctamente",
-                Data = pointsInterestsDtos
+            var pointsDto = _mapper.Map<List<PointInterestDto>>(pointsEntity);
+
+            return new ResponseDto<List<PointInterestDto>>{
+              StatusCode = 200,
+              Status = true,
+              Message = MessagesConstant.RECORDS_FOUND,
+              Data = pointsDto  
             };
         }
 
-        public async Task<ResponseDto<PointInterestDto>> GetPointInterestByIdAsync(Guid id)
+        public async Task<ResponseDto<PointInterestDto>> GetPuntoDeInteresByIdAsync(Guid id)
         {
-            var pointInterestEntity = await _context.PoinstInterest.FirstOrDefaultAsync(e => e.Id == id);
+            var pointsEntity = await _context.PointsInterest.FirstOrDefaultAsync(p => p.Id == id);
 
-            if (pointInterestEntity == null)
-            {
-                return new ResponseDto<PointInterestDto>
-                {
+            if(pointsEntity == null){
+                return new ResponseDto<PointInterestDto>{
                     StatusCode = 404,
                     Status = false,
-                    Message = "No se encontró el punto de interés"
+                    Message = MessagesConstant.RECORD_NOT_FOUND
                 };
             }
 
-            var pointInterestDto = _mapper.Map<PointInterestDto>(pointInterestEntity);
+            var pointsDto = _mapper.Map<PointInterestDto>(pointsEntity);
 
-            return new ResponseDto<PointInterestDto>
-            {
+            return new ResponseDto<PointInterestDto>{
                 StatusCode = 200,
                 Status = true,
-                Message = "Registro encontrado correctamente",
-                Data = pointInterestDto
+                Message = MessagesConstant.RECORD_FOUND,
+                Data = pointsDto
             };
         }
 
-        public async Task<ResponseDto<PointInterestDto>> CreateAsync(PointInterestCreateDto dto)
+        public async Task<ResponseDto<PointInterestDto>> CreatePuntoDeInteresAsync(PointInterestCreateDto dto)
         {
-            var pointInterestEntity = _mapper.Map<PointInterestEntity>(dto);
+            var pointsEntity = _mapper.Map<PointInterestEntity>(dto);
 
-            _context.PoinstInterest.Add(pointInterestEntity);
+            _context.PointsInterest.Add(pointsEntity);
+
             await _context.SaveChangesAsync();
 
-            var pointInterestDto = _mapper.Map<PointInterestDto>(pointInterestEntity);
+            var pointsDto = _mapper.Map<PointInterestDto>(pointsEntity);
 
-            return new ResponseDto<PointInterestDto>
-            {
+            return new ResponseDto<PointInterestDto>{
                 StatusCode = 201,
                 Status = true,
-                Message = "Registro creado exitosamente",
-                Data = pointInterestDto
+                Message = MessagesConstant.CREATE_SUCCESS,
+                Data = pointsDto
             };
         }
 
-        public async Task<ResponseDto<PointInterestDto>> EditAsync(PointInterestEditDto dto, Guid id)
+        public async Task<ResponseDto<PointInterestDto>> EditPuntoDeInteresAsync(PointInterestEditDto dto, Guid id)
         {
-            var pointInterestEntity = await _context.PoinstInterest.FirstOrDefaultAsync(e => e.Id == id);
+            var pointsEntity = await _context.PointsInterest.FirstOrDefaultAsync(p => p.Id == id);
 
-            if (pointInterestEntity == null)
-            {
-                return new ResponseDto<PointInterestDto>
-                {
+            if(pointsEntity == null){
+                return new ResponseDto<PointInterestDto>{
                     StatusCode = 404,
                     Status = false,
-                    Message = "No se encontró el registro"
+                    Message = MessagesConstant.UPDATE_ERROR
                 };
             }
 
-            _mapper.Map(dto, pointInterestEntity);
+            _mapper.Map(dto, pointsEntity);
 
-            _context.PoinstInterest.Update(pointInterestEntity);
+            _context.PointsInterest.Update(pointsEntity);
+
             await _context.SaveChangesAsync();
 
-            var pointInterestDto = _mapper.Map<PointInterestDto>(pointInterestEntity);
+            var pointsDto = _mapper.Map<PointInterestDto>(pointsEntity);
 
-            return new ResponseDto<PointInterestDto>
-            {
+            return new ResponseDto<PointInterestDto>{
                 StatusCode = 200,
                 Status = true,
-                Message = "Registro modificado exitosamente",
-                Data = pointInterestDto
+                Message = MessagesConstant.UPDATE_SUCCESS,
+                Data = pointsDto
             };
         }
 
-        public async Task<ResponseDto<PointInterestDto>> DeleteAsync(Guid id)
+        public async Task<ResponseDto<PointInterestDto>> DeletePuntoDeInteresAsync(Guid id)
         {
-            var pointInterestEntity = await _context.PoinstInterest.FirstOrDefaultAsync(e => e.Id == id);
+            var pointsEntity = await _context.PointsInterest.FirstOrDefaultAsync(p => p.Id == id);
 
-            if (pointInterestEntity == null)
-            {
-                return new ResponseDto<PointInterestDto>
-                {
+            if(pointsEntity == null){
+                return new ResponseDto<PointInterestDto>{
                     StatusCode = 404,
                     Status = false,
-                    Message = "No se encontró el registro"
+                    Message = MessagesConstant.DELETE_ERROR
                 };
             }
 
-            _context.PoinstInterest.Remove(pointInterestEntity);
+            _context.PointsInterest.Remove(pointsEntity);
+
             await _context.SaveChangesAsync();
 
-            return new ResponseDto<PointInterestDto>
-            {
+            return new ResponseDto<PointInterestDto>{
                 StatusCode = 200,
                 Status = true,
-                Message = "Registro borrado correctamente"
+                Message = MessagesConstant.DELETE_SUCCESS
             };
         }
     }

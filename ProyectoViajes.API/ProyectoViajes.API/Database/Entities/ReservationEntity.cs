@@ -1,9 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProyectoViajes.API.Database.Entities
 {
-    [Table("reservations", Schema = "dbo")]
+    [Table("reservation", Schema = "dbo")]
     public class ReservationEntity
     {
         // Id
@@ -15,34 +15,32 @@ namespace ProyectoViajes.API.Database.Entities
         [Required]
         [Column("user_id")]
         public Guid UserId { get; set; }
-        //[ForeignKey(nameof(UserId))]
+        [ForeignKey(nameof(UserId))]
+        public virtual UserEntity User { get; set; }
 
-        // Paquete Id
-        [Column("package_id")]
+        // Paquete de viaje Id
         [Required]
-        public Guid PackageId { get; set; }
-        [ForeignKey(nameof(PackageId))]
+        [Column("travel_package_id")]
+        public Guid TravelPackageId { get; set; }
+        [ForeignKey(nameof(TravelPackageId))]
         public virtual TravelPackageEntity TravelPackage { get; set; }
 
-        // Fecha de reservación
-        [Display(Name = "Fecha de Reserva")]
+        // Fecha de reserva
+        [Required]
         [Column("reservation_date")]
-        [Required(ErrorMessage = "La {0} es requerida")]
         public DateTime ReservationDate { get; set; }
 
-        // Estado
-        [Display(Name = "Estado")]
-        [Column("status")]
-        [Required(ErrorMessage = "El {0} es requerido")]
-        public string Status { get; set; }
+        // Cantidad de personas
+        [Required]
+        [Column("number_people")]
+        public int NumberPeople { get; set; }
 
-        // Total pagado
-        [Display(Name = "Total Pagado")]
-        [Column("total_paid")]
-        [Required(ErrorMessage = "El {0} es requerido")]
-        public decimal TotalPaid { get; set; }
+        // Estado de la reserva
+        [Required]
+        [Column("status_reservation")]
+        public bool StatusReservation { get; set; }
 
         // Relación con pagos
-        public virtual IEnumerable<PaymentEntity> Payments { get; set; }
+        public virtual IEnumerable<PaymentEntity> Payments {get; set;}
     }
 }

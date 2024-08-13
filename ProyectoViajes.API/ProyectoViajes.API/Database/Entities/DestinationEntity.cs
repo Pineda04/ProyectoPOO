@@ -1,9 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProyectoViajes.API.Database.Entities
 {
-    [Table("destination", Schema ="dbo")]
+    [Table("destination", Schema = "dbo")]
     public class DestinationEntity
     {
         // Id
@@ -23,15 +23,17 @@ namespace ProyectoViajes.API.Database.Entities
         public string Description { get; set; }
 
         // Ubicación
-        [StringLength(200)]
+        [StringLength(100)]
         [Required]
         [Column("location")]
         public string Location { get; set; }
 
-        // Puntos de interes
-        public virtual IEnumerable<PointInterestEntity> PointsInterest { get; set; }
+        // Fecha de registro
+        [Column("registration_date")]
+        public DateTime RegistrationDate { get; set; }
 
-        // Para la relación con Paquete de viaje
-        public virtual IEnumerable<TravelPackageEntity> TravelPackages  { get; set; }
+        // Puntos de interes
+        [Column("points_interest")]
+        public virtual IEnumerable<PointInterestEntity> PointsInterest { get; set; }
     }
 }

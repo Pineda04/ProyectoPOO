@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 
 namespace ProyectoViajes.API.Database.Entities
 {
-    [Table("travel_package", Schema = "dbo")]
+    [Table("travel_package", Schema ="dbo")]
     public class TravelPackageEntity
     {
         // Id
@@ -11,7 +12,7 @@ namespace ProyectoViajes.API.Database.Entities
         [Column("id")]
         public Guid Id { get; set; }
 
-        // Nombre
+        // Nombre 
         [StringLength(100)]
         [Required]
         [Column("name")]
@@ -25,14 +26,14 @@ namespace ProyectoViajes.API.Database.Entities
         // Precio
         [Required]
         [Column("price")]
-        public double Price { get; set; }
+        public decimal Price { get; set; }
 
-        // Duración
+        // Duración (en dias)
         [Required]
         [Column("duration")]
         public int Duration { get; set; }
 
-        // Fecha de inicio 
+        // Fecha de inicio
         [Required]
         [Column("start_date")]
         public DateTime StartDate { get; set; }
@@ -42,28 +43,27 @@ namespace ProyectoViajes.API.Database.Entities
         [Column("end_date")]
         public DateTime EndDate { get; set; }
 
-        // Actividades 
+        // Actividades
         public virtual IEnumerable<ActivityEntity> Activities { get; set; }
 
-        // Agencia id
+        // Agencia Id
         [Required]
         [Column("agency_id")]
         public Guid AgencyId { get; set; }
         [ForeignKey(nameof(AgencyId))]
-        public virtual AgencyEntity Agency { get; set; }
+        public AgencyEntity Agency { get; set; }
 
-        // Destino id 
+        // Destino Id
         [Required]
         [Column("destination_id")]
         public Guid DestinationId { get; set; }
         [ForeignKey(nameof(DestinationId))]
-        public virtual DestinationEntity Destination { get; set; }
+        public DestinationEntity Destination { get; set; }
 
-        // Reserva 
+        // Reserva
         public virtual IEnumerable<ReservationEntity> Reservations { get; set; }
 
         // Valoración
         public virtual IEnumerable<AssessmentEntity> Assessments { get; set; }
-
     }
 }

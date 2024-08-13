@@ -1,4 +1,4 @@
-﻿namespace ProyectoViajes.API.Dtos.Agencies
+namespace ProyectoViajes.API.Dtos.Agencies
 {
     public class AgencyDto
     {
@@ -11,7 +11,7 @@
         public string Contact { get; set; }
 
         public string Location { get; set; }
-
+        
         public DateTime RegistrationDate { get; set; }
     }
 }

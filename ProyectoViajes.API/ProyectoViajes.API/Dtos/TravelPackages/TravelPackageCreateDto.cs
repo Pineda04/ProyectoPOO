@@ -1,39 +1,47 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProyectoViajes.API.Dtos.TravelPackages
 {
     public class TravelPackageCreateDto
     {
-        [Display(Name = "Nombre")]
-        [Required(ErrorMessage = "El {0} es requerido.")]
-        [StringLength(100, ErrorMessage = "El {0} debe tener menos de {1} caracteres.")]
+        // Nombre
+        [Display(Name = "nombre")]
+        [StringLength(100, ErrorMessage = "El {0} del paquete de viaje debe tener menos de {1} caracteres.")]
+        [Required(ErrorMessage = "El {0} del paquete de viaje es requerido.")]
         public string Name { get; set; }
 
-        [Display(Name = "Descripción")]
-        [StringLength(500, ErrorMessage = "La {0} debe tener menos de {1} caracteres.")]
+        // Descripción
+        [Display(Name = "descripcion")]
+        [StringLength(500, ErrorMessage = "La {0} del paquete de viaje debe tener menos de {1} caracteres.")]
         public string Description { get; set; }
 
-        [Display(Name = "Precio")]
+        // Precio
+        [Display(Name = "precio")]
         [Required(ErrorMessage = "El {0} es requerido.")]
-        public double Price { get; set; }
+        public decimal Price { get; set; }
 
-        [Display(Name = "Duración")]
+        // Duración
+        [Display(Name = "duracion")]
         [Required(ErrorMessage = "La {0} es requerida.")]
         public int Duration { get; set; }
 
-        [Display(Name = "Fecha de Inicio")]
+        // Fecha de inicio
+        [Display(Name = "fecha de inicio")]
         [Required(ErrorMessage = "La {0} es requerida.")]
         public DateTime StartDate { get; set; }
 
-        [Display(Name = "Fecha de Fin")]
+        // Fecha de fin
+        [Display(Name = "fecha de fin")]
         [Required(ErrorMessage = "La {0} es requerida.")]
         public DateTime EndDate { get; set; }
 
-        [Display(Name = "Agencia")]
-        [Required(ErrorMessage = "La {0} es requerida.")]
+        // Agencia Id
+        [Display(Name = "id de la agencia")]
+        [Required(ErrorMessage = "El {0} es requerido.")]
         public Guid AgencyId { get; set; }
 
-        [Display(Name = "Destino")]
+        // Destino Id
+        [Display(Name = "id del destino")]
         [Required(ErrorMessage = "El {0} es requerido.")]
         public Guid DestinationId { get; set; }
     }

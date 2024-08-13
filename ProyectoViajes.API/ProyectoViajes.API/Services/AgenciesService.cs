@@ -1,5 +1,6 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using ProyectoViajes.API.Constants;
 using ProyectoViajes.API.Database;
 using ProyectoViajes.API.Database.Entities;
 using ProyectoViajes.API.Dtos.Agencies;
@@ -15,52 +16,53 @@ namespace ProyectoViajes.API.Services
 
         public AgenciesService(ProyectoViajesContext context, IMapper mapper)
         {
-            this._context = context;
-            this._mapper = mapper;
+            _context = context;
+            _mapper = mapper;
         }
 
+        // Traer todo
         public async Task<ResponseDto<List<AgencyDto>>> GetAgenciesListAsync()
         {
             var agenciesEntity = await _context.Agencies.ToListAsync();
+            
             var agenciesDtos = _mapper.Map<List<AgencyDto>>(agenciesEntity);
 
-            return new ResponseDto<List<AgencyDto>>
-            {
-                StatusCode = 200,
-                Status = true,
-                Message = "Lista de agencias obtenidos correctamente",
-                Data = agenciesDtos
+            return new ResponseDto<List<AgencyDto>>{
+              StatusCode = 200,
+              Status = true,
+              Message = MessagesConstant.RECORDS_FOUND,  
+              Data = agenciesDtos
             };
         }
 
+        // Traer por Id
         public async Task<ResponseDto<AgencyDto>> GetAgencyByIdAsync(Guid id)
         {
-            var agencyEntity = await _context.Agencies.FirstOrDefaultAsync(e => e.Id == id);
+            var agencyEntity = await _context.Agencies.FirstOrDefaultAsync(a => a.Id == id);
 
-            if(agencyEntity == null)
-            {
-                return new ResponseDto<AgencyDto>
-                {
+            if(agencyEntity == null){
+                return new ResponseDto<AgencyDto>{
                     StatusCode = 404,
                     Status = false,
-                    Message = "No se encontro la agencia"
+                    Message = MessagesConstant.RECORD_NOT_FOUND
                 };
             }
 
             var agencyDto = _mapper.Map<AgencyDto>(agencyEntity);
 
-            return new ResponseDto<AgencyDto>
-            {
+            return new ResponseDto<AgencyDto>{
                 StatusCode = 200,
                 Status = true,
-                Message = "Registro encontrado correctamente",
+                Message = MessagesConstant.RECORD_FOUND,
                 Data = agencyDto
             };
         }
 
-        public async Task<ResponseDto<AgencyDto>> CreateAsync(AgencyCreateDto dto)
+        // Crear
+        public async Task<ResponseDto<AgencyDto>> CreateAgencyAsync(AgencyCreateDto dto)
         {
             var agencyEntity = _mapper.Map<AgencyEntity>(dto);
+            agencyEntity.RegistrationDate = DateTime.UtcNow;
 
             _context.Agencies.Add(agencyEntity);
 
@@ -68,30 +70,28 @@ namespace ProyectoViajes.API.Services
 
             var agencyDto = _mapper.Map<AgencyDto>(agencyEntity);
 
-            return new ResponseDto<AgencyDto>
-            {
+            return new ResponseDto<AgencyDto>{
                 StatusCode = 201,
                 Status = true,
-                Message = "Registro creado exitosamente",
-                Data= agencyDto
+                Message = MessagesConstant.CREATE_SUCCESS,
+                Data = agencyDto
             };
         }
 
-        public async Task<ResponseDto<AgencyDto>> EditAsync(AgencyEditDto dto, Guid id)
+        // Editar
+        public async Task<ResponseDto<AgencyDto>> EditAgencyAsync(AgencyEditDto dto, Guid id)
         {
-            var agencyEntity = await _context.Agencies.FirstOrDefaultAsync(e => e.Id == id);
+            var agencyEntity = await _context.Agencies.FirstOrDefaultAsync(a => a.Id == id);
 
-            if(agencyEntity == null)
-            {
-                return new ResponseDto<AgencyDto>
-                {
+            if(agencyEntity == null){
+                return new ResponseDto<AgencyDto>{
                     StatusCode = 404,
                     Status = false,
-                    Message = "No se encontro el registro"
+                    Message = MessagesConstant.UPDATE_ERROR
                 };
             }
 
-            _mapper.Map<AgencyEditDto, AgencyEntity>(dto, agencyEntity);
+            _mapper.Map(dto, agencyEntity);
 
             _context.Agencies.Update(agencyEntity);
 
@@ -99,37 +99,35 @@ namespace ProyectoViajes.API.Services
 
             var agencyDto = _mapper.Map<AgencyDto>(agencyEntity);
 
-            return new ResponseDto<AgencyDto>
-            {
+            return new ResponseDto<AgencyDto>{
                 StatusCode = 200,
                 Status = true,
-                Message = "Registro modificado exitosamente",
+                Message = MessagesConstant.UPDATE_SUCCESS,
                 Data = agencyDto
             };
         }
 
-        public async Task<ResponseDto<AgencyDto>> DeleteAsync(Guid id)
+        // ELiminar
+        public async Task<ResponseDto<AgencyDto>> DeleteAgencyAsync(Guid id)
         {
-            var agencyEntity = await _context.Agencies.FirstOrDefaultAsync(c => c.Id == id);
+            var agencyEntity = await _context.Agencies.FirstOrDefaultAsync(a => a.Id == id);
 
-            if (agencyEntity == null)
-            {
-                return new ResponseDto<AgencyDto>
-                {
+            if(agencyEntity == null){
+                return new ResponseDto<AgencyDto>{
                     StatusCode = 404,
                     Status = false,
-                    Message = "No se encontro el registro"
+                    Message = MessagesConstant.DELETE_ERROR
                 };
             }
 
             _context.Agencies.Remove(agencyEntity);
+
             await _context.SaveChangesAsync();
 
-            return new ResponseDto<AgencyDto>
-            {
+            return new ResponseDto<AgencyDto>{
                 StatusCode = 200,
                 Status = true,
-                Message = "Registro borrado correctamente"
+                Message = MessagesConstant.UPDATE_SUCCESS
             };
         }
     }

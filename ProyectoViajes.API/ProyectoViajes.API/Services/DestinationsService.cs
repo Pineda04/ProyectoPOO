@@ -1,10 +1,11 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using ProyectoViajes.API.Constants;
 using ProyectoViajes.API.Database;
 using ProyectoViajes.API.Database.Entities;
+using ProyectoViajes.API.Dtos.Common;
 using ProyectoViajes.API.Dtos.Destinations;
 using ProyectoViajes.API.Services.Interfaces;
-using ProyectoViajes.API.Dtos.Common;
 
 namespace ProyectoViajes.API.Services
 {
@@ -18,116 +19,108 @@ namespace ProyectoViajes.API.Services
             this._context = context;
             this._mapper = mapper;
         }
-
+        
         public async Task<ResponseDto<List<DestinationDto>>> GetDestinationsListAsync()
         {
-            var destinationsEntity = await _context.Destinations.ToListAsync();
-            var destinationsDtos = _mapper.Map<List<DestinationDto>>(destinationsEntity);
+            var destinationsEntity = await _context.Destinations.Include(d => d.PointsInterest).ToListAsync();
+            var destinationsDto = _mapper.Map<List<DestinationDto>>(destinationsEntity);
 
-            return new ResponseDto<List<DestinationDto>>
-            {
+            return new ResponseDto<List<DestinationDto>> {
                 StatusCode = 200,
                 Status = true,
-                Message = "Lista de destinos obtenidos correctamente",
-                Data = destinationsDtos
+                Message = MessagesConstant.RECORDS_FOUND,
+                Data = destinationsDto
             };
         }
 
         public async Task<ResponseDto<DestinationDto>> GetDestinationByIdAsync(Guid id)
         {
-            var destinationEntity = await _context.Destinations.FirstOrDefaultAsync(e => e.Id == id);
-
-            if (destinationEntity == null)
-            {
-                return new ResponseDto<DestinationDto>
-                {
+            var destinationEntity = await _context.Destinations.Include(d => d.PointsInterest).FirstOrDefaultAsync(d => d.Id == id);
+        
+            if(destinationEntity == null){
+                return new ResponseDto<DestinationDto>{
                     StatusCode = 404,
                     Status = false,
-                    Message = "No se encontró el destino"
+                    Message = MessagesConstant.RECORD_NOT_FOUND
                 };
             }
 
             var destinationDto = _mapper.Map<DestinationDto>(destinationEntity);
 
-            return new ResponseDto<DestinationDto>
-            {
+            return new ResponseDto<DestinationDto>{
                 StatusCode = 200,
                 Status = true,
-                Message = "Registro encontrado correctamente",
+                Message = MessagesConstant.RECORD_FOUND,
                 Data = destinationDto
             };
         }
 
-        public async Task<ResponseDto<DestinationDto>> CreateAsync(DestinationCreateDto dto)
+        public async Task<ResponseDto<DestinationDto>> CreateDestinationAsync(DestinationCreateDto dto)
         {
             var destinationEntity = _mapper.Map<DestinationEntity>(dto);
 
             _context.Destinations.Add(destinationEntity);
+
             await _context.SaveChangesAsync();
 
             var destinationDto = _mapper.Map<DestinationDto>(destinationEntity);
 
-            return new ResponseDto<DestinationDto>
-            {
+            return new ResponseDto<DestinationDto>{
                 StatusCode = 201,
                 Status = true,
-                Message = "Registro creado exitosamente",
+                Message = MessagesConstant.CREATE_SUCCESS,
                 Data = destinationDto
             };
         }
 
-        public async Task<ResponseDto<DestinationDto>> EditAsync(DestinationEditDto dto, Guid id)
+        public async Task<ResponseDto<DestinationDto>> EditDestinationAsync(DestinationEditDto dto, Guid id)
         {
-            var destinationEntity = await _context.Destinations.FirstOrDefaultAsync(e => e.Id == id);
+            var destinationEntity = await _context.Destinations.Include(d => d.PointsInterest).FirstOrDefaultAsync(d => d.Id == id);
 
-            if (destinationEntity == null)
-            {
-                return new ResponseDto<DestinationDto>
-                {
+            if(destinationEntity == null){
+                return new ResponseDto<DestinationDto>{
                     StatusCode = 404,
                     Status = false,
-                    Message = "No se encontró el registro"
+                    Message = MessagesConstant.UPDATE_ERROR
                 };
             }
 
             _mapper.Map(dto, destinationEntity);
 
             _context.Destinations.Update(destinationEntity);
+
             await _context.SaveChangesAsync();
 
             var destinationDto = _mapper.Map<DestinationDto>(destinationEntity);
 
-            return new ResponseDto<DestinationDto>
-            {
+            return new ResponseDto<DestinationDto>{
                 StatusCode = 200,
                 Status = true,
-                Message = "Registro modificado exitosamente",
+                Message = MessagesConstant.UPDATE_SUCCESS,
                 Data = destinationDto
-            };
+            };  
         }
 
-        public async Task<ResponseDto<DestinationDto>> DeleteAsync(Guid id)
+        public async Task<ResponseDto<DestinationDto>> DeleteDestinationAsync(Guid id)
         {
-            var destinationEntity = await _context.Destinations.FirstOrDefaultAsync(e => e.Id == id);
+            var destinationEntity = await _context.Destinations.FirstOrDefaultAsync(d => d.Id == id);
 
-            if (destinationEntity == null)
-            {
-                return new ResponseDto<DestinationDto>
-                {
+            if(destinationEntity == null){
+                return new ResponseDto<DestinationDto>{
                     StatusCode = 404,
                     Status = false,
-                    Message = "No se encontró el registro"
+                    Message = MessagesConstant.DELETE_ERROR
                 };
             }
 
             _context.Destinations.Remove(destinationEntity);
+
             await _context.SaveChangesAsync();
 
-            return new ResponseDto<DestinationDto>
-            {
+            return new ResponseDto<DestinationDto>{
                 StatusCode = 200,
                 Status = true,
-                Message = "Registro borrado correctamente"
+                Message = MessagesConstant.DELETE_SUCCESS
             };
         }
     }

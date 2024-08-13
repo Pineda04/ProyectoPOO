@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using ProyectoViajes.API.Constants;
 using ProyectoViajes.API.Database;
 using ProyectoViajes.API.Database.Entities;
 using ProyectoViajes.API.Dtos.Common;
@@ -10,165 +12,115 @@ namespace ProyectoViajes.API.Services
     public class PaymentService : IPaymentService
     {
         private readonly ProyectoViajesContext _context;
-
-        public PaymentService(ProyectoViajesContext context)
+        private readonly IMapper _mapper;
+        public PaymentService(ProyectoViajesContext context, IMapper mapper)
         {
+            _mapper = mapper;
             _context = context;
         }
 
         public async Task<ResponseDto<List<PaymentDto>>> GetPaymentsListAsync()
         {
-            var payments = await _context.Payments
-                .Select(p => new PaymentDto
-                {
-                    PaymentId = p.PaymentId,
-                    ReservationId = p.ReservationId,
-                    Amount = p.Amount,
-                    PaymentDate = p.PaymentDate,
-                    PaymentMethod = p.PaymentMethod,
-                    Status = p.Status
-                }).ToListAsync();
+            var paymentsEntity = await _context.Payments.ToListAsync();
 
-            return new ResponseDto<List<PaymentDto>>
-            {
+            var paymentsDto = _mapper.Map<List<PaymentDto>>(paymentsEntity);
+
+            return new ResponseDto<List<PaymentDto>>{
                 StatusCode = 200,
                 Status = true,
-                Data = payments,
-                Message = "Success"
+                Message = MessagesConstant.RECORDS_FOUND,
+                Data = paymentsDto
             };
         }
 
         public async Task<ResponseDto<PaymentDto>> GetPaymentByIdAsync(Guid id)
         {
-            var payment = await _context.Payments.FindAsync(id);
+            var paymentsEntity = await _context.Payments.FirstOrDefaultAsync(p => p.Id == id);
 
-            if (payment == null)
-            {
-                return new ResponseDto<PaymentDto>
-                {
+            if(paymentsEntity == null){
+                return new ResponseDto<PaymentDto>{
                     StatusCode = 404,
                     Status = false,
-                    Message = "Payment not found"
+                    Message = MessagesConstant.RECORD_NOT_FOUND
                 };
             }
 
-            var paymentDto = new PaymentDto
-            {
-                PaymentId = payment.PaymentId,
-                ReservationId = payment.ReservationId,
-                Amount = payment.Amount,
-                PaymentDate = payment.PaymentDate,
-                PaymentMethod = payment.PaymentMethod,
-                Status = payment.Status
-            };
+            var paymentsDto = _mapper.Map<PaymentDto>(paymentsEntity);
 
-            return new ResponseDto<PaymentDto>
-            {
+            return new ResponseDto<PaymentDto>{
                 StatusCode = 200,
                 Status = true,
-                Data = paymentDto,
-                Message = "Success"
+                Message = MessagesConstant.RECORD_FOUND,
+                Data = paymentsDto
             };
         }
 
-        public async Task<ResponseDto<PaymentDto>> CreateAsync(CreatePaymentDto dto)
+        public async Task<ResponseDto<PaymentDto>> CreatePaymentAsync(PaymentCreateDto dto)
         {
-            var payment = new PaymentEntity
-            {
-                PaymentId = Guid.NewGuid(),
-                ReservationId = dto.ReservationId,
-                Amount = dto.Amount,
-                PaymentDate = dto.PaymentDate,
-                PaymentMethod = dto.PaymentMethod,
-                Status = dto.Status
-            };
+            var paymentsEntity = _mapper.Map<PaymentEntity>(dto);
 
-            _context.Payments.Add(payment);
+            _context.Payments.Add(paymentsEntity);
+
             await _context.SaveChangesAsync();
 
-            var paymentDto = new PaymentDto
-            {
-                PaymentId = payment.PaymentId,
-                ReservationId = payment.ReservationId,
-                Amount = payment.Amount,
-                PaymentDate = payment.PaymentDate,
-                PaymentMethod = payment.PaymentMethod,
-                Status = payment.Status
-            };
+            var paymentsDto = _mapper.Map<PaymentDto>(paymentsEntity);
 
-            return new ResponseDto<PaymentDto>
-            {
+            return new ResponseDto<PaymentDto>{
                 StatusCode = 201,
                 Status = true,
-                Data = paymentDto,
-                Message = "Payment created successfully"
+                Message = MessagesConstant.CREATE_SUCCESS,
+                Data = paymentsDto
             };
         }
 
-        public async Task<ResponseDto<PaymentDto>> EditAsync(EditPaymentDto dto, Guid id)
+        public async Task<ResponseDto<PaymentDto>> EditPaymentAsync(PaymentEditDto dto, Guid id)
         {
-            var payment = await _context.Payments.FindAsync(id);
+            var paymentsEntity = await _context.Payments.FirstOrDefaultAsync(p => p.Id == id);
 
-            if (payment == null)
-            {
-                return new ResponseDto<PaymentDto>
-                {
+            if(paymentsEntity == null){
+                return new ResponseDto<PaymentDto>{
                     StatusCode = 404,
                     Status = false,
-                    Message = "Payment not found"
+                    Message = MessagesConstant.UPDATE_ERROR
                 };
             }
 
-            payment.ReservationId = dto.ReservationId;
-            payment.Amount = dto.Amount;
-            payment.PaymentDate = dto.PaymentDate;
-            payment.PaymentMethod = dto.PaymentMethod;
-            payment.Status = dto.Status;
+            _mapper.Map(dto, paymentsEntity);
 
-            _context.Payments.Update(payment);
+            _context.Payments.Update(paymentsEntity);
+
             await _context.SaveChangesAsync();
 
-            var paymentDto = new PaymentDto
-            {
-                PaymentId = payment.PaymentId,
-                ReservationId = payment.ReservationId,
-                Amount = payment.Amount,
-                PaymentDate = payment.PaymentDate,
-                PaymentMethod = payment.PaymentMethod,
-                Status = payment.Status
-            };
+            var paymentsDto = _mapper.Map<PaymentDto>(paymentsEntity);
 
-            return new ResponseDto<PaymentDto>
-            {
+            return new ResponseDto<PaymentDto>{
                 StatusCode = 200,
                 Status = true,
-                Data = paymentDto,
-                Message = "Payment updated successfully"
+                Message = MessagesConstant.UPDATE_SUCCESS,
+                Data = paymentsDto
             };
         }
 
-        public async Task<ResponseDto<PaymentDto>> DeleteAsync(Guid id)
+        public async Task<ResponseDto<PaymentDto>> DeletePaymentAsync(Guid id)
         {
-            var payment = await _context.Payments.FindAsync(id);
+            var paymentsEntity = await _context.Payments.FirstOrDefaultAsync(p => p.Id == id);
 
-            if (payment == null)
-            {
-                return new ResponseDto<PaymentDto>
-                {
+            if(paymentsEntity == null){
+                return new ResponseDto<PaymentDto>{
                     StatusCode = 404,
                     Status = false,
-                    Message = "Payment not found"
+                    Message = MessagesConstant.DELETE_ERROR
                 };
             }
 
-            _context.Payments.Remove(payment);
+            _context.Payments.Remove(paymentsEntity);
+
             await _context.SaveChangesAsync();
 
-            return new ResponseDto<PaymentDto>
-            {
+            return new ResponseDto<PaymentDto>{
                 StatusCode = 200,
                 Status = true,
-                Message = "Payment deleted successfully"
+                Message = MessagesConstant.DELETE_SUCCESS
             };
         }
     }

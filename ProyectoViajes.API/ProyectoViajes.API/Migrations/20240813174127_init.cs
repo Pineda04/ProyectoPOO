@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ProyectoViajes.API.Migrations
 {
     /// <inheritdoc />
-    public partial class FixedTables : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -22,8 +22,8 @@ namespace ProyectoViajes.API.Migrations
                     id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    contact = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    location = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    contact = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    location = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     registration_date = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -39,11 +39,29 @@ namespace ProyectoViajes.API.Migrations
                     id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    location = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false)
+                    location = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    registration_date = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_destination", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "user",
+                schema: "dbo",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    password = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    rol = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    registration_date = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_user", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -76,7 +94,7 @@ namespace ProyectoViajes.API.Migrations
                     id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    price = table.Column<double>(type: "float", nullable: false),
+                    price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     duration = table.Column<int>(type: "int", nullable: false),
                     start_date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     end_date = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -125,73 +143,86 @@ namespace ProyectoViajes.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "assessments",
-                schema: "dbo",
+                name: "assessment",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     user_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    package_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    travel_package_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     rating = table.Column<int>(type: "int", nullable: false),
                     comment = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     rating_date = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_assessments", x => x.id);
+                    table.PrimaryKey("PK_assessment", x => x.id);
                     table.ForeignKey(
-                        name: "FK_assessments_travel_package_package_id",
-                        column: x => x.package_id,
+                        name: "FK_assessment_travel_package_travel_package_id",
+                        column: x => x.travel_package_id,
                         principalSchema: "dbo",
                         principalTable: "travel_package",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_assessment_user_user_id",
+                        column: x => x.user_id,
+                        principalSchema: "dbo",
+                        principalTable: "user",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "reservations",
+                name: "reservation",
                 schema: "dbo",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     user_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    package_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    travel_package_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     reservation_date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    total_paid = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    number_people = table.Column<int>(type: "int", nullable: false),
+                    status_reservation = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_reservations", x => x.id);
+                    table.PrimaryKey("PK_reservation", x => x.id);
                     table.ForeignKey(
-                        name: "FK_reservations_travel_package_package_id",
-                        column: x => x.package_id,
+                        name: "FK_reservation_travel_package_travel_package_id",
+                        column: x => x.travel_package_id,
                         principalSchema: "dbo",
                         principalTable: "travel_package",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_reservation_user_user_id",
+                        column: x => x.user_id,
+                        principalSchema: "dbo",
+                        principalTable: "user",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "payments",
+                name: "payment",
                 schema: "dbo",
                 columns: table => new
                 {
-                    PaymentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ReservationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PaymentMethod = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    reservation_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    payment_date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    payment_method = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    status = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_payments", x => x.PaymentId);
+                    table.PrimaryKey("PK_payment", x => x.id);
                     table.ForeignKey(
-                        name: "FK_payments_reservations_ReservationId",
-                        column: x => x.ReservationId,
+                        name: "FK_payment_reservation_reservation_id",
+                        column: x => x.reservation_id,
                         principalSchema: "dbo",
-                        principalTable: "reservations",
+                        principalTable: "reservation",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -203,16 +234,20 @@ namespace ProyectoViajes.API.Migrations
                 column: "travel_package_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_assessments_package_id",
-                schema: "dbo",
-                table: "assessments",
-                column: "package_id");
+                name: "IX_assessment_travel_package_id",
+                table: "assessment",
+                column: "travel_package_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_payments_ReservationId",
+                name: "IX_assessment_user_id",
+                table: "assessment",
+                column: "user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_payment_reservation_id",
                 schema: "dbo",
-                table: "payments",
-                column: "ReservationId");
+                table: "payment",
+                column: "reservation_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_point_interest_destination_id",
@@ -221,10 +256,16 @@ namespace ProyectoViajes.API.Migrations
                 column: "destination_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_reservations_package_id",
+                name: "IX_reservation_travel_package_id",
                 schema: "dbo",
-                table: "reservations",
-                column: "package_id");
+                table: "reservation",
+                column: "travel_package_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_reservation_user_id",
+                schema: "dbo",
+                table: "reservation",
+                column: "user_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_travel_package_agency_id",
@@ -247,11 +288,10 @@ namespace ProyectoViajes.API.Migrations
                 schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "assessments",
-                schema: "dbo");
+                name: "assessment");
 
             migrationBuilder.DropTable(
-                name: "payments",
+                name: "payment",
                 schema: "dbo");
 
             migrationBuilder.DropTable(
@@ -259,11 +299,15 @@ namespace ProyectoViajes.API.Migrations
                 schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "reservations",
+                name: "reservation",
                 schema: "dbo");
 
             migrationBuilder.DropTable(
                 name: "travel_package",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
+                name: "user",
                 schema: "dbo");
 
             migrationBuilder.DropTable(

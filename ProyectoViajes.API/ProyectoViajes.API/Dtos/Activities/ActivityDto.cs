@@ -1,5 +1,3 @@
-﻿using ProyectoViajes.API.Dtos.TravelPackages;
-
 namespace ProyectoViajes.API.Dtos.Activities
 {
     public class ActivityDto
@@ -11,7 +9,5 @@ namespace ProyectoViajes.API.Dtos.Activities
         public string Description { get; set; }
 
         public Guid TravelPackageId { get; set; }
-
-        public TravelPackageDto TravelPackage { get; set; }
     }
 }

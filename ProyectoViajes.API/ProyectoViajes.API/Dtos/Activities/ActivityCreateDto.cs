@@ -1,19 +1,22 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProyectoViajes.API.Dtos.Activities
 {
     public class ActivityCreateDto
     {
-        [Display(Name = "Nombre")]
-        [Required(ErrorMessage = "El {0} es requerido.")]
-        [StringLength(100, ErrorMessage = "El {0} debe tener menos de {1} caracteres.")]
+        // Nombre
+        [Display(Name = "nombre")]
+        [StringLength(100, ErrorMessage = "El {0} de la actividad debe tener menos de {1} caracteres.")]
+        [Required(ErrorMessage = "El {0} de la actividad de requerido.")]
         public string Name { get; set; }
 
-        [Display(Name = "Descripción")]
-        [StringLength(500, ErrorMessage = "La {0} debe tener menos de {1} caracteres.")]
+        // Descripción
+        [Display(Name = "descripcion")]
+        [StringLength(500, ErrorMessage = "La {0} de la actividad debe tener menos de {1} caracteres.")]
         public string Description { get; set; }
 
-        [Display(Name = "Paquete de Viaje")]
+        // Paquete de viaje Id
+        [Display(Name = "id del paquete de viaje")]
         [Required(ErrorMessage = "El {0} es requerido.")]
         public Guid TravelPackageId { get; set; }
     }

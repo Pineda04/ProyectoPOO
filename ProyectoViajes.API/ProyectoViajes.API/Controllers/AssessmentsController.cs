@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using ProyectoViajes.API.Dtos.Assessments;
 using ProyectoViajes.API.Dtos.Common;
 using ProyectoViajes.API.Services.Interfaces;
@@ -7,52 +7,51 @@ namespace ProyectoViajes.API.Controllers
 {
     [ApiController]
     [Route("api/assessments")]
-    public class AssessmentController : ControllerBase
+    public class AssessmentsController : ControllerBase
     {
         private readonly IAssessmentService _assessmentService;
-
-        public AssessmentController(IAssessmentService assessmentService)
+        public AssessmentsController(IAssessmentService assessmentService)
         {
             _assessmentService = assessmentService;
         }
 
-        // Para traer todo
+        // Traer todos
         [HttpGet]
         public async Task<ActionResult<ResponseDto<List<AssessmentDto>>>> GetAll()
         {
-            var response = await _assessmentService.GetAssessmentsAsync();
+            var response = await _assessmentService.GetAssessmentsListAsync();
             return StatusCode(response.StatusCode, response);
         }
 
-        // Traer por id 
+        // Traer por Id
         [HttpGet("{id}")]
-        public async Task<ActionResult<ResponseDto<AssessmentDto>>> Get(Guid id)
+        public async Task<ActionResult<ResponseDto<List<AssessmentDto>>>> Get(Guid id)
         {
             var response = await _assessmentService.GetAssessmentByIdAsync(id);
             return StatusCode(response.StatusCode, response);
         }
 
-        // Crear
+        // Crear un destino
         [HttpPost]
-        public async Task<ActionResult<ResponseDto<AssessmentDto>>> Create(CreateAssessmentDto dto)
+        public async Task<ActionResult<ResponseDto<List<AssessmentDto>>>> Create(AssessmentCreateDto dto)
         {
-            var response = await _assessmentService.CreateAsync(dto);
+            var response = await _assessmentService.CreateAssessmentAsync(dto);
             return StatusCode(response.StatusCode, response);
         }
 
-        // Editar 
+        // Editar un destino
         [HttpPut("{id}")]
-        public async Task<ActionResult<ResponseDto<AssessmentDto>>> Edit(EditAssessmentDto dto, Guid id)
+        public async Task<ActionResult<ResponseDto<List<AssessmentDto>>>> Edit(AssessmentEditDto dto, Guid id)
         {
-            var response = await _assessmentService.EditAsync(dto, id);
+            var response = await _assessmentService.EditAssessmentAsync(dto, id);
             return StatusCode(response.StatusCode, response);
         }
 
-        // Eliminar
+        // Eliminar un destino
         [HttpDelete("{id}")]
-        public async Task<ActionResult<ResponseDto<AssessmentDto>>> Delete(Guid id)
+        public async Task<ActionResult<ResponseDto<List<AssessmentDto>>>> Delete(Guid id)
         {
-            var response = await _assessmentService.DeleteAsync(id);
+            var response = await _assessmentService.DeleteAssessmentAsync(id);
             return StatusCode(response.StatusCode, response);
         }
     }

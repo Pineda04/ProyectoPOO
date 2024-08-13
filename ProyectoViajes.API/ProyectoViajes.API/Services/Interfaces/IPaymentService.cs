@@ -1,4 +1,8 @@
-﻿using ProyectoViajes.API.Dtos.Common;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using ProyectoViajes.API.Dtos.Common;
 using ProyectoViajes.API.Dtos.Payments;
 
 namespace ProyectoViajes.API.Services.Interfaces
@@ -9,10 +13,10 @@ namespace ProyectoViajes.API.Services.Interfaces
 
         Task<ResponseDto<PaymentDto>> GetPaymentByIdAsync(Guid id);
 
-        Task<ResponseDto<PaymentDto>> CreateAsync(CreatePaymentDto dto);
+        Task<ResponseDto<PaymentDto>> CreatePaymentAsync(PaymentCreateDto dto);
 
-        Task<ResponseDto<PaymentDto>> EditAsync(EditPaymentDto dto, Guid id);
+        Task<ResponseDto<PaymentDto>> EditPaymentAsync(PaymentEditDto dto, Guid id);
 
-        Task<ResponseDto<PaymentDto>> DeleteAsync(Guid id);
+        Task<ResponseDto<PaymentDto>> DeletePaymentAsync(Guid id);
     }
 }

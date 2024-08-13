@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using ProyectoViajes.API.Dtos.Common;
 using ProyectoViajes.API.Dtos.Destinations;
 using ProyectoViajes.API.Services.Interfaces;
@@ -9,50 +9,45 @@ namespace ProyectoViajes.API.Controllers
     [Route("api/destinations")]
     public class DestinationsController : ControllerBase
     {
-        private readonly IDestinationsService _destinationService;
+        private readonly IDestinationsService _destinationsService;
 
-        public DestinationsController(IDestinationsService destinationService)
+        public DestinationsController(IDestinationsService destinationsService)
         {
-            _destinationService = destinationService;
+            _destinationsService = destinationsService;
         }
 
         // Traer todos
         [HttpGet]
-        public async Task<ActionResult<ResponseDto<List<DestinationDto>>>> GetAll()
-        {
-            var response = await _destinationService.GetDestinationsListAsync();
+        public async Task<ActionResult<ResponseDto<List<DestinationDto>>>> GetAll(){
+            var response = await _destinationsService.GetDestinationsListAsync();
             return StatusCode(response.StatusCode, response);
         }
 
-        // Traer por id
+        // Traer por Id
         [HttpGet("{id}")]
-        public async Task<ActionResult<ResponseDto<DestinationDto>>> Get(Guid id)
-        {
-            var response = await _destinationService.GetDestinationByIdAsync(id);
+        public async Task<ActionResult<ResponseDto<List<DestinationDto>>>> Get(Guid id){
+            var response = await _destinationsService.GetDestinationByIdAsync(id);
             return StatusCode(response.StatusCode, response);
         }
 
-        // Crear
+        // Crear un destino
         [HttpPost]
-        public async Task<ActionResult<ResponseDto<DestinationDto>>> Create(DestinationCreateDto dto)
-        {
-            var response = await _destinationService.CreateAsync(dto);
+        public async Task<ActionResult<ResponseDto<List<DestinationDto>>>> Create(DestinationCreateDto dto){
+            var response = await _destinationsService.CreateDestinationAsync(dto);
             return StatusCode(response.StatusCode, response);
         }
 
-        // Editar
+        // Editar un destino
         [HttpPut("{id}")]
-        public async Task<ActionResult<ResponseDto<DestinationDto>>> Edit(DestinationEditDto dto, Guid id)
-        {
-            var response = await _destinationService.EditAsync(dto, id);
+        public async Task<ActionResult<ResponseDto<List<DestinationDto>>>> Edit(DestinationEditDto dto, Guid id){
+            var response = await _destinationsService.EditDestinationAsync(dto, id);
             return StatusCode(response.StatusCode, response);
         }
 
-        // Eliminar
+        // Eliminar un destino
         [HttpDelete("{id}")]
-        public async Task<ActionResult<ResponseDto<DestinationDto>>> Delete(Guid id)
-        {
-            var response = await _destinationService.DeleteAsync(id);
+        public async Task<ActionResult<ResponseDto<List<DestinationDto>>>> Delete(Guid id){
+            var response = await _destinationsService.DeleteDestinationAsync(id);
             return StatusCode(response.StatusCode, response);
         }
     }

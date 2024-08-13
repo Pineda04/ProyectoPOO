@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using ProyectoViajes.API.Database.Entities;
 using ProyectoViajes.API.Dtos.Agencies;
 using ProyectoViajes.API.Dtos.Common;
@@ -21,45 +21,40 @@ namespace ProyectoViajes.API.Controllers
 
         // Traer todos
         [HttpGet]
-        public async Task<ActionResult<ResponseDto<AgencyDto>>> GetAll()
-        {
+        public async Task<ActionResult<ResponseDto<AgencyDto>>> GetAll(){
             var response = await _agenciesService.GetAgenciesListAsync();
 
             return StatusCode(response.StatusCode, response);
         }
 
-        // Traer por id 
+        // Traer por Id
         [HttpGet("{id}")]
-        public async Task<ActionResult<ResponseDto<AgencyDto>>> Get(Guid id)
-        {
+        public async Task<ActionResult<ResponseDto<AgencyDto>>>Get(Guid id){
             var response = await _agenciesService.GetAgencyByIdAsync(id);
 
             return StatusCode(response.StatusCode, response);
         }
 
-        // Crear 
+        // Crear una agencia
         [HttpPost]
-        public async Task<ActionResult<ResponseDto<AgencyDto>>> Create(AgencyCreateDto dto)
-        {
-            var response = await _agenciesService.CreateAsync(dto);
+        public async Task<ActionResult<ResponseDto<AgencyDto>>> Create(AgencyCreateDto dto){
+            var response = await _agenciesService.CreateAgencyAsync(dto);
 
             return StatusCode(response.StatusCode, response);
         }
 
-        // Editar
+        // Editar una agencia
         [HttpPut("{id}")]
-        public async Task<ActionResult<ResponseDto<AgencyDto>>> Edit(AgencyEditDto dto, Guid id)
-        {
-            var response = await _agenciesService.EditAsync(dto, id);
+        public async Task<ActionResult<ResponseDto<AgencyDto>>> Edit(AgencyEditDto dto, Guid id){
+            var response = await _agenciesService.EditAgencyAsync(dto, id);
 
             return StatusCode(response.StatusCode, response);
         }
 
-        // Eliminar
+        // Eliminar una agencia
         [HttpDelete("{id}")]
-        public async Task<ActionResult<ResponseDto<AgencyDto>>> Delete(Guid id)
-        {
-            var response = await _agenciesService.DeleteAsync(id);
+        public async Task<ActionResult<ResponseDto<AgencyDto>>> Delete(Guid id){
+            var response = await _agenciesService.DeleteAgencyAsync(id);
 
             return StatusCode(response.StatusCode, response);
         }

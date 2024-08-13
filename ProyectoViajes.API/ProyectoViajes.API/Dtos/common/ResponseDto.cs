@@ -1,4 +1,4 @@
-﻿namespace ProyectoViajes.API.Dtos.Common
+namespace ProyectoViajes.API.Dtos.Common
 {
     public class ResponseDto <T>
     {

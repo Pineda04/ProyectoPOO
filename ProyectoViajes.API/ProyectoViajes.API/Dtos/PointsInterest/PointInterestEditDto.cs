@@ -1,6 +1,7 @@
-﻿namespace ProyectoViajes.API.Dtos.PointsInterest
+namespace ProyectoViajes.API.Dtos.PointsInterest
 {
     public class PointInterestEditDto : PointInterestCreateDto
     {
+        
     }
 }

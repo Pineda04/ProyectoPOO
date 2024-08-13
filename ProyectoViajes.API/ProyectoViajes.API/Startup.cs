@@ -1,10 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ProyectoViajes.API.Database;
-using ProyectoViajes.API.Services.Interfaces;
-using ProyectoViajes.API.Services;
-using ProyectoViajes.API.Database.Entities;
-using ProyectoViajes.API.Helpers;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using ProyectoViajes.API.Database;
+using ProyectoViajes.API.Helpers;
+using ProyectoViajes.API.Services;
+using ProyectoViajes.API.Services.Interfaces;
 
 namespace ProyectoViajes.API
 {
@@ -27,16 +26,16 @@ namespace ProyectoViajes.API
             services.AddDbContext<ProyectoViajesContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            // Add servicios de Agency
+            // Add Custom Services
             services.AddTransient<IAgenciesService, AgenciesService>();
-            services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IDestinationsService, DestinationsService>();
             services.AddTransient<IPointsInterestService, PointsInterestService>();
             services.AddTransient<ITravelPackagesService, TravelPackagesService>();
             services.AddTransient<IActivitiesService, ActivitiesService>();
             services.AddTransient<IAssessmentService, AssessmentService>();
+            services.AddTransient<IReservationsService, ReservationsService>();
+            services.AddTransient<IUsersService, UsersService>();
             services.AddTransient<IPaymentService, PaymentService>();
-            services.AddTransient<IReservationService, ReservationService>();
 
             // Add AutoMapper
             services.AddAutoMapper(typeof(AutoMapperProfile));

@@ -1,184 +1,127 @@
-﻿using ProyectoViajes.API.Database.Entities;
-using ProyectoViajes.API.Database;
-using ProyectoViajes.API.Dtos.Assessments;
-using ProyectoViajes.API.Services.Interfaces;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using ProyectoViajes.API.Constants;
+using ProyectoViajes.API.Database;
+using ProyectoViajes.API.Database.Entities;
+using ProyectoViajes.API.Dtos.Assessments;
 using ProyectoViajes.API.Dtos.Common;
+using ProyectoViajes.API.Services.Interfaces;
 
 namespace ProyectoViajes.API.Services
 {
     public class AssessmentService : IAssessmentService
     {
         private readonly ProyectoViajesContext _context;
+        private readonly IMapper _mapper;
 
-        public AssessmentService(ProyectoViajesContext context)
+        public AssessmentService(ProyectoViajesContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public async Task<ResponseDto<List<AssessmentDto>>> GetAssessmentsAsync()
+        public async Task<ResponseDto<List<AssessmentDto>>> GetAssessmentsListAsync()
         {
-            var assessments = await _context.Assessments.ToListAsync();
-            var assessmentDtos = assessments.Select(a => new AssessmentDto
-            {
-                Id = a.Id,
-                UserId = a.UserId,
-                PackageId = a.PackageId,
-                Rating = a.Rating,
-                Comment = a.Comment,
-                Date = a.Date
-            }).ToList();
+            var assessmentEntity = await _context.Assessments.ToListAsync();
 
-            return new ResponseDto<List<AssessmentDto>>
-            {
+            var assessmentDto = _mapper.Map<List<AssessmentDto>>(assessmentEntity);
+
+            return new ResponseDto<List<AssessmentDto>>{
                 StatusCode = 200,
-                Status = true,  
-                Data = assessmentDtos,
-                Message = "Assessments retrieved successfully",
-              
+                Status = true,
+                Message = MessagesConstant.RECORDS_FOUND,
+                Data = assessmentDto
             };
         }
 
         public async Task<ResponseDto<AssessmentDto>> GetAssessmentByIdAsync(Guid id)
         {
-            var assessment = await _context.Assessments.FindAsync(id);
+            var assessmentEntity = await _context.Assessments.FirstOrDefaultAsync(a => a.Id == id);
 
-            if (assessment == null)
-            {
-                return new ResponseDto<AssessmentDto>
-                {
+            if(assessmentEntity == null){
+                return new ResponseDto<AssessmentDto>{
                     StatusCode = 404,
                     Status = false,
-                    Data = null,
-                    Message = "Assessment not found",
-                 
+                    Message = MessagesConstant.RECORD_NOT_FOUND
                 };
             }
 
-            var assessmentDto = new AssessmentDto
-            {
-                Id = assessment.Id,
-                UserId = assessment.UserId,
-                PackageId = assessment.PackageId,
-                Rating = assessment.Rating,
-                Comment = assessment.Comment,
-                Date = assessment.Date
-            };
+            var assessmentDto = _mapper.Map<AssessmentDto>(assessmentEntity);
 
-            return new ResponseDto<AssessmentDto>
-            {
+            return new ResponseDto<AssessmentDto>{
                 StatusCode = 200,
                 Status = true,
-                Data = assessmentDto,
-                Message = "Assessment retrieved successfully",
-               
+                Message = MessagesConstant.RECORD_FOUND,
+                Data = assessmentDto
             };
         }
 
-        public async Task<ResponseDto<AssessmentDto>> CreateAsync(CreateAssessmentDto dto)
+        public async Task<ResponseDto<AssessmentDto>> CreateAssessmentAsync(AssessmentCreateDto dto)
         {
-            var assessment = new AssessmentEntity
-            {
-                Id = Guid.NewGuid(),
-                UserId = dto.UserId,
-                PackageId = dto.PackageId,
-                Rating = dto.Rating,
-                Comment = dto.Comment,
-                Date = dto.Date
-            };
+            var assessmentEntity = _mapper.Map<AssessmentEntity>(dto);
 
-            _context.Assessments.Add(assessment);
+            _context.Assessments.Add(assessmentEntity);
+
             await _context.SaveChangesAsync();
 
-            var assessmentDto = new AssessmentDto
-            {
-                Id = assessment.Id,
-                UserId = assessment.UserId,
-                PackageId = assessment.PackageId,
-                Rating = assessment.Rating,
-                Comment = assessment.Comment,
-                Date = assessment.Date
-            };
+            var assessmentDto = _mapper.Map<AssessmentDto>(assessmentEntity);
 
-            return new ResponseDto<AssessmentDto>
-            {
+            return new ResponseDto<AssessmentDto>{
                 StatusCode = 201,
                 Status = true,
-                Data = assessmentDto,
-                Message = "Assessment created successfully",
-                
+                Message = MessagesConstant.CREATE_SUCCESS,
+                Data = assessmentDto
             };
         }
 
-        public async Task<ResponseDto<AssessmentDto>> EditAsync(EditAssessmentDto dto, Guid id)
+        public async Task<ResponseDto<AssessmentDto>> EditAssessmentAsync(AssessmentEditDto dto, Guid id)
         {
-            var assessment = await _context.Assessments.FindAsync(id);
+            var assessmentEntity = await _context.Assessments.FirstOrDefaultAsync(a => a.Id == id);
 
-            if (assessment == null)
-            {
-                return new ResponseDto<AssessmentDto>
-                {
+            if(assessmentEntity == null){
+                return new ResponseDto<AssessmentDto>{
                     StatusCode = 404,
                     Status = false,
-                    Data = null,
-                    Message = "Assessment not found",
-                    
+                    Message = MessagesConstant.UPDATE_ERROR
                 };
             }
 
-            assessment.Rating = dto.Rating;
-            assessment.Comment = dto.Comment;
-            assessment.Date = dto.Date;
+            _mapper.Map(dto, assessmentEntity);
 
-            _context.Assessments.Update(assessment);
+            _context.Assessments.Update(assessmentEntity);
+
             await _context.SaveChangesAsync();
 
-            var assessmentDto = new AssessmentDto
-            {
-                Id = assessment.Id,
-                UserId = assessment.UserId,
-                PackageId = assessment.PackageId,
-                Rating = assessment.Rating,
-                Comment = assessment.Comment,
-                Date = assessment.Date
-            };
+            var assessmentDto = _mapper.Map<AssessmentDto>(assessmentEntity);
 
-            return new ResponseDto<AssessmentDto>
-            {
+            return new ResponseDto<AssessmentDto>{
                 StatusCode = 200,
                 Status = true,
-                Data = assessmentDto,
-                Message = "Assessment updated successfully",
-               
+                Message = MessagesConstant.UPDATE_SUCCESS,
+                Data = assessmentDto
             };
         }
 
-        public async Task<ResponseDto<AssessmentDto>> DeleteAsync(Guid id)
+        public async Task<ResponseDto<AssessmentDto>> DeleteAssessmentAsync(Guid id)
         {
-            var assessment = await _context.Assessments.FindAsync(id);
+            var assessmentEntity = await _context.Assessments.FirstOrDefaultAsync(a => a.Id == id);
 
-            if (assessment == null)
-            {
-                return new ResponseDto<AssessmentDto>
-                {
+            if(assessmentEntity == null){
+                return new ResponseDto<AssessmentDto>{
                     StatusCode = 404,
                     Status = false,
-                    Data = null,
-                    Message = "Assessment not found",
-                   
+                    Message = MessagesConstant.DELETE_ERROR
                 };
             }
 
-            _context.Assessments.Remove(assessment);
+            _context.Assessments.Remove(assessmentEntity);
+
             await _context.SaveChangesAsync();
 
-            return new ResponseDto<AssessmentDto>
-            {
+            return new ResponseDto<AssessmentDto>{
                 StatusCode = 200,
                 Status = true,
-                Data = null,
-                Message = "Assessment deleted successfully",
-               
+                Message = MessagesConstant.DELETE_SUCCESS
             };
         }
     }
