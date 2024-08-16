@@ -1,1 +1,2 @@
-export * from './PrincipalPage';
+export * from './HomePage';
+export * from './DestinationsPage';

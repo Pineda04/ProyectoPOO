@@ -1,4 +1,4 @@
-export const PrincipalMainBanner = () => {
+export const HomeMainBanner = () => {
   return (
     <section
       className="relative bg-cover bg-center h-[70vh] md:h-screen flex items-center justify-center"
