@@ -7,3 +7,5 @@ export * from './SearchSection';
 export * from './DestinationsList';
 export * from './DestinationDetails';
 export * from './PointsOfInterest';
+
+
