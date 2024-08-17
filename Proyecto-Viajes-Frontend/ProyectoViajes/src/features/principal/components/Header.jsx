@@ -33,9 +33,9 @@ export const Header = () => {
           <Link to="/destinations" className="hover:text-yellow-400 transition">
             Destinos
           </Link>
-          <a href="#" className="hover:text-yellow-400 transition">
+          <Link to="/travelPackages" className="hover:text-yellow-400 transition">
             Paquetes
-          </a>
+          </Link>
           <a href="#" className="hover:text-yellow-400 transition">
             Reservas
           </a>
@@ -65,10 +65,10 @@ export const Header = () => {
               <FaMapMarkerAlt size={20} className="flex-shrink-0" />
               <span className="text-lg">Destinos</span>
             </Link>
-            <a href="#" className="flex items-center space-x-3 hover:text-yellow-400 transition">
+            <Link to="/travelPackages" className="flex items-center space-x-3 hover:text-yellow-400 transition">
               <FaBox size={20} className="flex-shrink-0" />
               <span className="text-lg">Paquetes</span>
-            </a>
+            </Link>
             <a href="#" className="flex items-center space-x-3 hover:text-yellow-400 transition">
               <FaCalendarCheck size={20} className="flex-shrink-0" />
               <span className="text-lg">Reservas</span>

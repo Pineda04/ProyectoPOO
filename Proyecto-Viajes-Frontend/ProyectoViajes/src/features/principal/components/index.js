@@ -7,5 +7,6 @@ export * from './SearchSection';
 export * from './DestinationsList';
 export * from './DestinationDetails';
 export * from './PointsOfInterest';
-
-
+export * from './SearchTravelPackages';
+export * from './TravelPackagesFilter';
+export * from './TravelPackagesList';
