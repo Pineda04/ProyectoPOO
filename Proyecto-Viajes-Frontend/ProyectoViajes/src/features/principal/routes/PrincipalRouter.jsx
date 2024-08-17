@@ -1,16 +1,18 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import { PrincipalFooter, PrincipalHeader } from "../components";
-import { PrincipalPage } from "../pages";
+import { Footer, Header } from "../components";
+import { HomePage, DestinationsPage, DestinationPage} from "../pages";
 
 export const PrincipalRouter = () => {
   return (
     <div className="bg-gray-900 text-gray-200 min-h-screen">
-      <PrincipalHeader />
+      <Header />
       <Routes>
-        <Route path='/home' element={<PrincipalPage/>}/>
+        <Route path='/home' element={<HomePage/>}/>
+        <Route path='/destinations' element={<DestinationsPage/>}/>
+        <Route path='/destinations/destination/:id' element={<DestinationPage/>}/>
         <Route path='/*' element={<Navigate to={"/home"}/>}/>
       </Routes>
-      <PrincipalFooter/>
+      <Footer/>
     </div>
   );
 };

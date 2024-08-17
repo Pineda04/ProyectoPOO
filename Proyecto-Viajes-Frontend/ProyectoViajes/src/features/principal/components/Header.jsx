@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { HiMenuAlt3, HiX } from 'react-icons/hi';
 import { FaHome, FaMapMarkerAlt, FaBox, FaCalendarCheck, FaPhone } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
-export const PrincipalHeader = () => {
+export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -26,12 +27,12 @@ export const PrincipalHeader = () => {
         </div>
         {/* Navegación y botones para pantallas grandes */}
         <nav className={`hidden md:flex md:space-x-6 text-lg flex-grow`}>
-          <a href="#" className="hover:text-yellow-400 transition">
+          <Link to="/home" className="hover:text-yellow-400 transition">
             Inicio
-          </a>
-          <a href="#" className="hover:text-yellow-400 transition">
+          </Link>
+          <Link to="/destinations" className="hover:text-yellow-400 transition">
             Destinos
-          </a>
+          </Link>
           <a href="#" className="hover:text-yellow-400 transition">
             Paquetes
           </a>
@@ -56,14 +57,14 @@ export const PrincipalHeader = () => {
       {isMenuOpen && (
         <div className="md:hidden bg-gray-800 text-yellow-500 p-4 space-y-4 mt-4 mb-0">
           <nav className="space-y-4">
-            <a href="#" className="flex items-center space-x-3 hover:text-yellow-400 transition">
+            <Link to="/home" className="flex items-center space-x-3 hover:text-yellow-400 transition">
               <FaHome size={20} className="flex-shrink-0" />
               <span className="text-lg">Inicio</span>
-            </a>
-            <a href="#" className="flex items-center space-x-3 hover:text-yellow-400 transition">
+            </Link>
+            <Link to="/destinations" className="flex items-center space-x-3 hover:text-yellow-400 transition">
               <FaMapMarkerAlt size={20} className="flex-shrink-0" />
               <span className="text-lg">Destinos</span>
-            </a>
+            </Link>
             <a href="#" className="flex items-center space-x-3 hover:text-yellow-400 transition">
               <FaBox size={20} className="flex-shrink-0" />
               <span className="text-lg">Paquetes</span>

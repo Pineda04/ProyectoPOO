@@ -1,6 +1,6 @@
 import { FaFacebookF, FaTwitter, FaInstagram } from 'react-icons/fa';
 
-export const PrincipalFooter = () => {
+export const Footer = () => {
   return (
     <footer className="bg-gray-800 py-8 md:py-12">
       <div className="container mx-auto px-4 text-center">
