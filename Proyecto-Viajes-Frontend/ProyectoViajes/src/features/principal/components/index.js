@@ -10,3 +10,7 @@ export * from './PointsOfInterest';
 export * from './SearchTravelPackages';
 export * from './TravelPackagesFilter';
 export * from './TravelPackagesList';
+export * from './TravelPackageDetails';
+export * from './TravelPackageActivities';
+export * from './TravelPackageReviews';
+export * from './ReviewForm';
