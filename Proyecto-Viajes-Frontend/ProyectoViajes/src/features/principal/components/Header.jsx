@@ -36,21 +36,21 @@ export const Header = () => {
           <Link to="/travelPackages" className="hover:text-yellow-400 transition">
             Paquetes
           </Link>
-          <a href="#" className="hover:text-yellow-400 transition">
+          <Link to="/reservations" className="hover:text-yellow-400 transition">
             Reservas
-          </a>
+          </Link>
           <a href="#" className="hover:text-yellow-400 transition">
             Contacto
           </a>
         </nav>
         {/* Botones de acción para pantallas grandes */}
         <div className="hidden md:flex space-x-4 flex-shrink-0">
-          <button className="bg-yellow-500 text-gray-900 font-semibold py-2 px-4 rounded-lg shadow hover:bg-yellow-400 transition">
-            Reserva Ahora
-          </button>
-          <a href="#" className="bg-gray-800 text-yellow-500 font-semibold py-2 px-4 rounded-lg border border-yellow-500 hover:bg-gray-700 transition">
+          <Link to="/register" className="bg-yellow-500 text-gray-900 font-semibold py-2 px-4 rounded-lg shadow hover:bg-yellow-400 transition">
+            Registrarse
+          </Link>
+          <Link to="/login" className="bg-gray-800 text-yellow-500 font-semibold py-2 px-4 rounded-lg border border-yellow-500 hover:bg-gray-700 transition">
             Iniciar Sesión
-          </a>
+          </Link>
         </div>
       </div>
       {/* Menu de navegación para pantallas medianas y pequeñas */}
@@ -69,10 +69,10 @@ export const Header = () => {
               <FaBox size={20} className="flex-shrink-0" />
               <span className="text-lg">Paquetes</span>
             </Link>
-            <a href="#" className="flex items-center space-x-3 hover:text-yellow-400 transition">
+            <Link to="/reservations" className="flex items-center space-x-3 hover:text-yellow-400 transition">
               <FaCalendarCheck size={20} className="flex-shrink-0" />
               <span className="text-lg">Reservas</span>
-            </a>
+            </Link>
             <a href="#" className="flex items-center space-x-3 hover:text-yellow-400 transition">
               <FaPhone size={20} className="flex-shrink-0" />
               <span className="text-lg">Contacto</span>
@@ -80,12 +80,12 @@ export const Header = () => {
           </nav>
           {/* Botones de acción para pantallas pequeñas */}
           <div className="flex space-x-4 mt-4">
-            <button className="bg-yellow-500 text-gray-900 font-semibold py-2 px-4 rounded-lg shadow hover:bg-yellow-400 transition">
-              Reserva Ahora
-            </button>
-            <a href="#" className="bg-gray-800 text-yellow-500 font-semibold py-2 px-4 rounded-lg border border-yellow-500 hover:bg-gray-700 transition">
+            <Link to="/register" className="bg-yellow-500 text-gray-900 font-semibold py-2 px-4 rounded-lg shadow hover:bg-yellow-400 transition">
+              Registrarse
+            </Link>
+            <Link to="/login" className="bg-gray-800 text-yellow-500 font-semibold py-2 px-4 rounded-lg border border-yellow-500 hover:bg-gray-700 transition">
               Iniciar Sesión
-            </a>
+            </Link>
           </div>
         </div>
       )}

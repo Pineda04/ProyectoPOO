@@ -14,3 +14,6 @@ export * from './TravelPackageDetails';
 export * from './TravelPackageActivities';
 export * from './TravelPackageReviews';
 export * from './ReviewForm';
+export * from './ReservationsDetails';
+export * from './Login';
+export * from './Register';
