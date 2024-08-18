@@ -13,24 +13,53 @@ namespace ProyectoViajes.API.Services
     {
         private readonly ProyectoViajesContext _context;
         private readonly IMapper _mapper;
+        private readonly int PAGE_SIZE;
 
-        public PointsInterestService(ProyectoViajesContext context, IMapper mapper)
+        public PointsInterestService(ProyectoViajesContext context, IMapper mapper, IConfiguration configuration)
         {
             _context = context;
             _mapper = mapper;
+            PAGE_SIZE = configuration.GetValue<int>("PageSize");
         }
 
-        public async Task<ResponseDto<List<PointInterestDto>>> GetPuntosDeInteresListAsync()
+        public async Task<ResponseDto<PaginationDto<List<PointInterestDto>>>> GetPuntosDeInteresListAsync(string searchTerm = "", int page = 1)
         {
-            var pointsEntity = await _context.PointsInterest.ToListAsync();
+            int startIndex = (page - 1) * PAGE_SIZE;
 
-            var pointsDto = _mapper.Map<List<PointInterestDto>>(pointsEntity);
+            var pointsQuery = _context.PointsInterest.AsQueryable();
 
-            return new ResponseDto<List<PointInterestDto>>{
-              StatusCode = 200,
-              Status = true,
-              Message = MessagesConstant.RECORDS_FOUND,
-              Data = pointsDto  
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                pointsQuery = pointsQuery
+                    .Where(p => p.Name.ToLower().Contains(searchTerm.ToLower()) ||
+                                p.Description.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            int totalPoints = await pointsQuery.CountAsync();
+            int totalPages = (int)Math.Ceiling((double)totalPoints / PAGE_SIZE);
+
+            var points = await pointsQuery
+                .OrderByDescending(p => p.Name)
+                .Skip(startIndex)
+                .Take(PAGE_SIZE)
+                .ToListAsync();
+
+            var pointsDto = _mapper.Map<List<PointInterestDto>>(points);
+
+            return new ResponseDto<PaginationDto<List<PointInterestDto>>>
+            {
+                StatusCode = 200,
+                Status = true,
+                Message = MessagesConstant.RECORDS_FOUND,
+                Data = new PaginationDto<List<PointInterestDto>>
+                {
+                    CurrentPage = page,
+                    PageSize = PAGE_SIZE,
+                    TotalItems = totalPoints,
+                    Items = pointsDto,
+                    HasPreviousPage = page > 1,
+                    HasNextPage = page < totalPages
+                }
             };
         }
 

@@ -1,7 +1,25 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { getDestinationDetails } from '../../../shared/actions/destinations/destinations';
+import { PointsOfInterest } from './PointsOfInterest';
 
 export const DestinationDetails = () => {
+  const { id } = useParams();
+  const [destination, setDestination] = useState(null);
   const [isImageOpen, setIsImageOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchDestination = async () => {
+      try {
+        const response = await getDestinationDetails(id);
+        setDestination(response.data);
+      } catch (error) {
+        console.error('Error fetching destination details:', error);
+      }
+    };
+
+    fetchDestination();
+  }, [id]);
 
   const openImage = () => {
     setIsImageOpen(true);
@@ -11,29 +29,37 @@ export const DestinationDetails = () => {
     setIsImageOpen(false);
   };
 
+  if (!destination) {
+    return (
+      <div className="text-center text-white text-2xl py-12">
+        Cargando detalles del destino...
+      </div>
+    );
+  }
+
   return (
     <>
-      <section className="bg-gray-800 rounded-lg overflow-hidden shadow-xl mb-8  ">
+      <section className="bg-gray-800 rounded-lg overflow-hidden shadow-xl mb-8">
         <img
-          src="https://www.viajarafrancia.com/wp-content/uploads/2009/05/museo-de-louvre-en-paris-760x500.jpg"
-          alt="Destino"
+          src={destination.imageUrl}
+          alt={destination.name}
           className="w-full h-64 object-cover cursor-pointer transform transition-transform duration-300 hover:scale-105"
           onClick={openImage}
         />
         <div className="p-4 md:p-6">
           <h2 className="text-3xl md:text-4xl font-bold text-yellow-500">
-            Torre Eiffel, París
+            {destination.name}
           </h2>
           <p className="mt-2 md:mt-3 text-gray-300">
-            La Torre Eiffel es un icónico monumento en París, Francia. Construida en 1889, ofrece vistas panorámicas de la ciudad y es uno de los destinos turísticos más famosos del mundo. La torre tiene una altura de 324 metros y está rodeada de hermosos jardines y áreas recreativas.
+            {destination.description}
           </p>
           <p className="mt-2 md:mt-3 text-gray-300">
-            Ubicación: Champ de Mars, 5 Avenue Anatole France, 75007 París, Francia
+            Ubicación: {destination.location}
           </p>
         </div>
       </section>
 
-      {/* Para cuando se abra la imagen */}
+      {/* Modal para mostrar la imagen en grande */}
       {isImageOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 transition-opacity duration-300 opacity-100"
@@ -47,13 +73,16 @@ export const DestinationDetails = () => {
               &times;
             </button>
             <img
-              src="https://www.viajarafrancia.com/wp-content/uploads/2009/05/museo-de-louvre-en-paris-760x500.jpg"
-              alt="Destino"
+              src={destination.imageUrl}
+              alt={destination.name}
               className="w-full max-w-4xl h-auto rounded-lg"
             />
           </div>
         </div>
       )}
+
+      {/* Mostramos los puntos de interés para este destino */}
+      <PointsOfInterest destinationId={destination.id} />
     </>
   );
 };

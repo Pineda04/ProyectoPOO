@@ -28,5 +28,10 @@ namespace ProyectoViajes.API.Database.Entities
         public Guid DestinationId { get; set; }
         [ForeignKey(nameof(DestinationId))]
         public virtual DestinationEntity Destination { get; set; }
+
+        // Imagen
+        [Required]
+        [Column("image_url")]
+        public string ImageUrl { get; set; }
     }
 }
