@@ -15,5 +15,7 @@ namespace ProyectoViajes.API.Dtos.Destinations
         public DateTime RegistrationDate { get; set; }
 
         public List<PointInterestDto> PointsInterest { get; set; }
+
+        public string ImageUrl { get; set; }
     }
 }

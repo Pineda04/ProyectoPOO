@@ -19,5 +19,10 @@ namespace ProyectoViajes.API.Dtos.Destinations
         [Display(Name = "ubicacion")]
         [StringLength(100, ErrorMessage = "La {0} del destino debe tener menos de {1} caracteres.")]
         public string Location { get; set; }
+
+        // Imagen
+        [Display(Name = "url de la imagen")]
+        [Required(ErrorMessage = "La {0} es requerida.")]
+        public string ImageUrl { get; set; }
     }
 }

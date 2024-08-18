@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = 'https://localhost:5047/api';
+const API_URL = 'https://localhost:7234/api';
 
 const travelApi = axios.create({
     baseURL: API_URL,

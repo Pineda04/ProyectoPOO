@@ -35,5 +35,10 @@ namespace ProyectoViajes.API.Database.Entities
         // Puntos de interes
         [Column("points_interest")]
         public virtual IEnumerable<PointInterestEntity> PointsInterest { get; set; }
+
+        // Imagen
+        [Required]
+        [Column("image_url")]
+        public string ImageUrl { get; set; }
     }
 }
