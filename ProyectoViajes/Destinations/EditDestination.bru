@@ -1,0 +1,19 @@
+meta {
+  name: EditDestination
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{PATH}}/destinations
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "string",
+    "description": "string",
+    "location": "string"
+  }
+}

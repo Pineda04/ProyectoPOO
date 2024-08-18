@@ -1,0 +1,21 @@
+meta {
+  name: EditPayment
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{PATH}}/payments
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "reservationId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "amount": 0,
+    "paymentDate": "2024-08-18T03:10:27.509Z",
+    "paymentMethod": "string",
+    "status": "string"
+  }
+}

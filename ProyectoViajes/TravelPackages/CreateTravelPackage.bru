@@ -1,0 +1,24 @@
+meta {
+  name: CreateTravelPackage
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{PATH}}/travel_packages
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "string",
+    "description": "string",
+    "price": 0,
+    "duration": 0,
+    "startDate": "2024-08-18T03:12:20.519Z",
+    "endDate": "2024-08-18T03:12:20.519Z",
+    "agencyId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "destinationId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+  }
+}

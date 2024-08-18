@@ -39,6 +39,18 @@ namespace ProyectoViajes.API
 
             // Add AutoMapper
             services.AddAutoMapper(typeof(AutoMapperProfile));
+
+            // CORS Configuration
+            services.AddCors(opt => 
+            {
+                var allowURLS = Configuration.GetSection("AllowURLS").Get<string[]>();
+                
+                opt.AddPolicy("CorsPolicy", builder => builder
+                .WithOrigins(allowURLS)
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials());
+            });
         }
 
         private Action<IMapperConfigurationExpression> nameof(AutoMapperProfile autoMapperProfile)
@@ -57,6 +69,8 @@ namespace ProyectoViajes.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("CorsPolicy");
 
             app.UseAuthorization();
 

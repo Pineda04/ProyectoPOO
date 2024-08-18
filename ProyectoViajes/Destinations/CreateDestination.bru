@@ -1,0 +1,20 @@
+meta {
+  name: CreateDestination
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{PATH}}/destinations
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Machu Picchu",
+    "description": "Una antigua ciudadela inca ubicada en lo alto de las montañas de los Andes en Perú, conocida por su impresionante arquitectura y misteriosa historia.",
+    "location": "Cusco, Perú"
+  }
+  
+}

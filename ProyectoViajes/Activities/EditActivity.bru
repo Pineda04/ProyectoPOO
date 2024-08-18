@@ -1,0 +1,19 @@
+meta {
+  name: EditActivity
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{PATH}}/activities/
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "string",
+    "description": "string",
+    "travelPackageId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+  }
+}

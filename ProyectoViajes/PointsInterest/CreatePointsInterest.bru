@@ -1,0 +1,19 @@
+meta {
+  name: CreatePointsInterest
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{PATH}}/points_interest
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "name": "Templo de las Tres Ventanas",
+      "description": "Un templo con tres ventanas trapezoidales, que ofrece vistas espectaculares de las montañas circundantes.",
+      "destinationId": "dd3e9e6a-2b53-4153-b988-08dcbf33f153"
+    }
+}

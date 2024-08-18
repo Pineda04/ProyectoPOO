@@ -1,0 +1,20 @@
+meta {
+  name: CreateAgency
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{PATH}}/agencies
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "string",
+    "description": "string",
+    "contact": "string",
+    "location": "string"
+  }
+}

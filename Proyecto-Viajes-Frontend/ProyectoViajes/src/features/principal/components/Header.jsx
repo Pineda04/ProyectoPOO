@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { HiMenuAlt3, HiX } from 'react-icons/hi';
-import { FaHome, FaMapMarkerAlt, FaBox, FaCalendarCheck, FaPhone } from 'react-icons/fa';
+import { FaHome, FaMapMarkerAlt, FaBox, FaCalendarCheck} from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 export const Header = () => {
@@ -39,9 +39,6 @@ export const Header = () => {
           <Link to="/reservations" className="hover:text-yellow-400 transition">
             Reservas
           </Link>
-          <a href="#" className="hover:text-yellow-400 transition">
-            Contacto
-          </a>
         </nav>
         {/* Botones de acción para pantallas grandes */}
         <div className="hidden md:flex space-x-4 flex-shrink-0">
@@ -73,10 +70,6 @@ export const Header = () => {
               <FaCalendarCheck size={20} className="flex-shrink-0" />
               <span className="text-lg">Reservas</span>
             </Link>
-            <a href="#" className="flex items-center space-x-3 hover:text-yellow-400 transition">
-              <FaPhone size={20} className="flex-shrink-0" />
-              <span className="text-lg">Contacto</span>
-            </a>
           </nav>
           {/* Botones de acción para pantallas pequeñas */}
           <div className="flex space-x-4 mt-4">
