@@ -10,13 +10,13 @@ export const DestinationsList = () => {
   const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
-    const fetchDestinations = async () => {
+    const getDestinations = async () => {
       const response = await getDestinationsList();
       setDestinations(response.data.items);
       setFilteredDestinations(response.data.items);  // Comienzo mostrando todos destinos
     };
 
-    fetchDestinations();
+    getDestinations();
   }, []);
 
   // Aqui se realiza la busqueda de la barra 

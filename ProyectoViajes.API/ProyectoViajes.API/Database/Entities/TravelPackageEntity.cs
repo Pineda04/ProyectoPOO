@@ -60,6 +60,11 @@ namespace ProyectoViajes.API.Database.Entities
         [ForeignKey(nameof(DestinationId))]
         public DestinationEntity Destination { get; set; }
 
+        // Imagen
+        [Required]
+        [Column("image_url")]
+        public string ImageUrl { get; set; }
+
         // Reserva
         public virtual IEnumerable<ReservationEntity> Reservations { get; set; }
 

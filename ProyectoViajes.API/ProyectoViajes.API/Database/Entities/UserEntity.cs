@@ -29,12 +29,6 @@ namespace ProyectoViajes.API.Database.Entities
         [Column("password")]
         public string Password { get; set; }
 
-        // Rol
-        [Required]
-        [StringLength(20)]
-        [Column("rol")]
-        public string Rol { get; set; }
-
         // Fecha de registro
         [Column("registration_date")]
         public DateTime RegistrationDate { get; set; }

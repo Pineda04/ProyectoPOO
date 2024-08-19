@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const usePointsOfInterest = (destinationId = null) => {
+export const usePointsOfInterest = (destinationId = null) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchPointsOfInterest = async () => {
+    const getPointsOfInterest = async () => {
       let allPoints = [];
       let page = 1;
       let hasMorePages = true;
@@ -43,10 +43,8 @@ const usePointsOfInterest = (destinationId = null) => {
       setLoading(false);
     };
 
-    fetchPointsOfInterest();
+    getPointsOfInterest();
   }, [destinationId]);
 
   return { data, loading, error };
 };
-
-export default usePointsOfInterest;

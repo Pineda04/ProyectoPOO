@@ -1,4 +1,5 @@
 using AutoMapper;
+using Azure;
 using Microsoft.EntityFrameworkCore;
 using ProyectoViajes.API.Constants;
 using ProyectoViajes.API.Database;
@@ -13,31 +14,62 @@ namespace ProyectoViajes.API.Services
     {
         private readonly ProyectoViajesContext _context;
         private readonly IMapper _mapper;
+        private readonly int PAGE_SIZE;
 
-        public TravelPackagesService(ProyectoViajesContext context, IMapper mapper)
+        public TravelPackagesService(ProyectoViajesContext context, IMapper mapper, IConfiguration configuration)
         {
             _context = context;
             _mapper = mapper;
+            PAGE_SIZE = configuration.GetValue<int>("PageSize");
         }
 
-        public async Task<ResponseDto<List<TravelPackageDto>>> GetTravelPackagesListAsync()
+        public async Task<ResponseDto<PaginationDto<List<TravelPackageDto>>>> GetTravelPackagesListAsync(string searchTerm = "", int page = 1)
         {
-            var packagesEntity = await _context.TravelPackages.Include(tp => tp.Activities).ToListAsync();
+            int startIndex = (page - 1) * PAGE_SIZE;
 
-            var packagesDto = _mapper.Map<List<TravelPackageDto>>(packagesEntity);
+            var travelPackagesQuery = _context.TravelPackages
+                .Include(tp => tp.Activities)
+                .Include(tp => tp.Assessments)
+                .AsQueryable();
 
-            return new ResponseDto<List<TravelPackageDto>>
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                travelPackagesQuery = travelPackagesQuery
+                    .Where(tp => tp.Name.ToLower().Contains(searchTerm.ToLower()) ||
+                                 tp.Description.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            int totalTravelPackages = await travelPackagesQuery.CountAsync();
+            int totalPages = (int)Math.Ceiling((double)totalTravelPackages / PAGE_SIZE);
+
+            var travelPackages = await travelPackagesQuery
+                .OrderByDescending(tp => tp.Name)
+                .Skip(startIndex)
+                .Take(PAGE_SIZE)
+                .ToListAsync();
+
+            var travelPackageDtos = _mapper.Map<List<TravelPackageDto>>(travelPackages);
+
+            return new ResponseDto<PaginationDto<List<TravelPackageDto>>>
             {
                 StatusCode = 200,
                 Status = true,
                 Message = MessagesConstant.RECORDS_FOUND,
-                Data = packagesDto
+                Data = new PaginationDto<List<TravelPackageDto>>
+                {
+                    CurrentPage = page,
+                    PageSize = PAGE_SIZE,
+                    TotalItems = totalTravelPackages,
+                    Items = travelPackageDtos,
+                    HasPreviousPage = page > 1,
+                    HasNextPage = page < totalPages
+                }
             };
         }
 
         public async Task<ResponseDto<TravelPackageDto>> GetTravelPackageByIdAsync(Guid id)
         {
-            var packagesEntity = await _context.TravelPackages.Include(tp => tp.Activities).FirstOrDefaultAsync(tp => tp.Id == id);
+            var packagesEntity = await _context.TravelPackages.Include(tp => tp.Activities).Include(tp => tp.Assessments).FirstOrDefaultAsync(tp => tp.Id == id);
 
             if (packagesEntity == null)
             {

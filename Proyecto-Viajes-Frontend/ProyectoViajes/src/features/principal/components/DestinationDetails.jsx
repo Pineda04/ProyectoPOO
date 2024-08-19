@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { getDestinationDetails } from '../../../shared/actions/destinations/destinations';
-import { PointsOfInterest } from './PointsOfInterest';
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { getDestinationDetails } from "../../../shared/actions/destinations/destinations";
+import { PointsOfInterest } from "./PointsOfInterest";
 
 export const DestinationDetails = () => {
   const { id } = useParams();
@@ -9,16 +9,12 @@ export const DestinationDetails = () => {
   const [isImageOpen, setIsImageOpen] = useState(false);
 
   useEffect(() => {
-    const fetchDestination = async () => {
-      try {
-        const response = await getDestinationDetails(id);
-        setDestination(response.data);
-      } catch (error) {
-        console.error('Error fetching destination details:', error);
-      }
+    const getDestination = async () => {
+      const response = await getDestinationDetails(id);
+      setDestination(response.data);
     };
 
-    fetchDestination();
+    getDestination();
   }, [id]);
 
   const openImage = () => {

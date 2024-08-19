@@ -6,7 +6,6 @@ export * from './HomePopularDestinations';
 export * from './DestinationsList';
 export * from './DestinationDetails';
 export * from './PointsOfInterest';
-export * from './SearchTravelPackages';
 export * from './TravelPackagesFilter';
 export * from './TravelPackagesList';
 export * from './TravelPackageDetails';

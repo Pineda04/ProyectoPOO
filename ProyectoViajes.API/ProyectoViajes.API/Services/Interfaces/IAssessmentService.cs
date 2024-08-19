@@ -5,7 +5,7 @@ namespace ProyectoViajes.API.Services.Interfaces
 {
     public interface IAssessmentService
     {
-        Task<ResponseDto<List<AssessmentDto>>> GetAssessmentsListAsync();
+        Task<ResponseDto<PaginationDto<List<AssessmentDto>>>> GetAssessmentsListAsync(int page = 1);
 
         Task<ResponseDto<AssessmentDto>> GetAssessmentByIdAsync(Guid id);
 

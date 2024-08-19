@@ -26,6 +26,8 @@ namespace ProyectoViajes.API.Dtos.TravelPackages
 
         public Guid DestinationId { get; set; }
 
+        public string  ImageUrl { get; set; }
+
         public List<ReservationDto> Reservations { get; set; }
 
         public List<AssessmentDto> Assessments { get; set; }

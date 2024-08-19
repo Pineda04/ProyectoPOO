@@ -10,8 +10,6 @@ namespace ProyectoViajes.API.Dtos.Users
 
         public string Password { get; set; }
 
-        public string Rol { get; set; }
-
         public DateTime RegistrationDate { get; set; }
     }
 }

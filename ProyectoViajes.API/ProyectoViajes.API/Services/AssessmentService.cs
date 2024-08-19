@@ -13,24 +13,46 @@ namespace ProyectoViajes.API.Services
     {
         private readonly ProyectoViajesContext _context;
         private readonly IMapper _mapper;
+        private readonly int PAGE_SIZE;
 
-        public AssessmentService(ProyectoViajesContext context, IMapper mapper)
+        public AssessmentService(ProyectoViajesContext context, IMapper mapper, IConfiguration configuration)
         {
             _context = context;
             _mapper = mapper;
+            PAGE_SIZE = configuration.GetValue<int>("PageSize");
         }
 
-        public async Task<ResponseDto<List<AssessmentDto>>> GetAssessmentsListAsync()
+        public async Task<ResponseDto<PaginationDto<List<AssessmentDto>>>> GetAssessmentsListAsync(int page = 1)
         {
-            var assessmentEntity = await _context.Assessments.ToListAsync();
+            int startIndex = (page - 1) * PAGE_SIZE;
 
-            var assessmentDto = _mapper.Map<List<AssessmentDto>>(assessmentEntity);
+            var assessmentsQuery = _context.Assessments.AsQueryable();
 
-            return new ResponseDto<List<AssessmentDto>>{
+            int totalAssessments = await assessmentsQuery.CountAsync();
+            int totalPages = (int)Math.Ceiling((double)totalAssessments / PAGE_SIZE);
+
+            var assessments = await assessmentsQuery
+                .OrderByDescending(a => a.RatingDate)
+                .Skip(startIndex)
+                .Take(PAGE_SIZE)
+                .ToListAsync();
+
+            var assessmentDtos = _mapper.Map<List<AssessmentDto>>(assessments);
+
+            return new ResponseDto<PaginationDto<List<AssessmentDto>>>
+            {
                 StatusCode = 200,
                 Status = true,
                 Message = MessagesConstant.RECORDS_FOUND,
-                Data = assessmentDto
+                Data = new PaginationDto<List<AssessmentDto>>
+                {
+                    CurrentPage = page,
+                    PageSize = PAGE_SIZE,
+                    TotalItems = totalAssessments,
+                    Items = assessmentDtos,
+                    HasPreviousPage = page > 1,
+                    HasNextPage = page < totalPages
+                }
             };
         }
 

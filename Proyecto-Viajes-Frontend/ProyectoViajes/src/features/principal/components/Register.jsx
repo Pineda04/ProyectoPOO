@@ -1,9 +1,52 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { registerUser } from "../../../shared/actions/users/users";
 
 export const Register = () => {
-  const handleRegister = (event) => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: ""
+  });
+  const [error, setError] = useState(null);
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleRegister = async (event) => {
     event.preventDefault();
-    window.location.href = "/login";
+
+    // Validar que las contraseñas coincidan
+    if (formData.password !== formData.confirmPassword) {
+      setError("Las contraseñas no coinciden");
+      return;
+    }
+
+    // Limpiar errores previos
+    setError(null);
+
+    try {
+      const currentDate = new Date().toISOString();
+
+      // Enviar los datos 
+      const response = await registerUser({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        registrationDate: currentDate
+      });
+
+      if (response?.status === 200) {
+        window.location.href = "/login";
+      } else {
+        window.location.href = "/login";
+      }
+    } catch (error) {
+      window.location.href = "/login";
+    }
   };
 
   return (
@@ -24,6 +67,8 @@ export const Register = () => {
               type="text"
               id="name"
               name="name"
+              value={formData.name}
+              onChange={handleChange}
               className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500"
               placeholder="Introduce tu nombre completo"
               required
@@ -40,6 +85,8 @@ export const Register = () => {
               type="email"
               id="email"
               name="email"
+              value={formData.email}
+              onChange={handleChange}
               className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500"
               placeholder="Introduce tu correo electrónico"
               required
@@ -56,6 +103,8 @@ export const Register = () => {
               type="password"
               id="password"
               name="password"
+              value={formData.password}
+              onChange={handleChange}
               className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500"
               placeholder="Introduce tu contraseña"
               required
@@ -71,7 +120,9 @@ export const Register = () => {
             <input
               type="password"
               id="confirm-password"
-              name="confirm-password"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
               className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500"
               placeholder="Confirma tu contraseña"
               required

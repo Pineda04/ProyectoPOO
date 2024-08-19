@@ -44,5 +44,10 @@ namespace ProyectoViajes.API.Dtos.TravelPackages
         [Display(Name = "id del destino")]
         [Required(ErrorMessage = "El {0} es requerido.")]
         public Guid DestinationId { get; set; }
+
+        // Imagen
+        [Display(Name = "url de la imagen")]
+        [Required(ErrorMessage = "La {0} es requerida.")]
+        public string ImageUrl { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using ProyectoViajes.API.Constants;
 using ProyectoViajes.API.Database;
 using ProyectoViajes.API.Database.Entities;
@@ -13,23 +14,53 @@ namespace ProyectoViajes.API.Services
     {
         private readonly ProyectoViajesContext _context;
         private readonly IMapper _mapper;
-        public ActivitiesService(ProyectoViajesContext context, IMapper mapper)
+        private readonly int PAGE_SIZE;
+
+        public ActivitiesService(ProyectoViajesContext context, IMapper mapper, IConfiguration configuration)
         {
             _mapper = mapper;
             _context = context;
+            PAGE_SIZE = configuration.GetValue<int>("PageSize");
         }
 
-        public async Task<ResponseDto<List<ActivityDto>>> GetActivitiesListAsync()
+        public async Task<ResponseDto<PaginationDto<List<ActivityDto>>>> GetActivitiesListAsync(string searchTerm = "", int page = 1)
         {
-            var activitiesEntity = await _context.Activities.ToListAsync();
+            int startIndex = (page - 1) * PAGE_SIZE;
 
-            var activitiesDto = _mapper.Map<List<ActivityDto>>(activitiesEntity);
+            var activitiesQuery = _context.Activities.AsQueryable();
 
-            return new ResponseDto<List<ActivityDto>>{
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                activitiesQuery = activitiesQuery
+                    .Where(a => a.Name.ToLower().Contains(searchTerm.ToLower()) ||
+                                a.Description.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            int totalActivities = await activitiesQuery.CountAsync();
+            int totalPages = (int)Math.Ceiling((double)totalActivities / PAGE_SIZE);
+
+            var activities = await activitiesQuery
+                .OrderByDescending(a => a.Name) 
+                .Skip(startIndex)
+                .Take(PAGE_SIZE)
+                .ToListAsync();
+
+            var activitiesDto = _mapper.Map<List<ActivityDto>>(activities);
+
+            return new ResponseDto<PaginationDto<List<ActivityDto>>>
+            {
                 StatusCode = 200,
                 Status = true,
                 Message = MessagesConstant.RECORDS_FOUND,
-                Data = activitiesDto
+                Data = new PaginationDto<List<ActivityDto>>
+                {
+                    CurrentPage = page,
+                    PageSize = PAGE_SIZE,
+                    TotalItems = totalActivities,
+                    Items = activitiesDto,
+                    HasPreviousPage = page > 1,
+                    HasNextPage = page < totalPages
+                }
             };
         }
 
