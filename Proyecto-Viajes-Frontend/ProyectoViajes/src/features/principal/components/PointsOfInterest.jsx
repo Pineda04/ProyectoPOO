@@ -2,7 +2,7 @@ import { useState } from 'react';
 import {usePointsOfInterest} from '../hooks/usePointsOfInterest';
 
 export const PointsOfInterest = ({ destinationId }) => {
-  const { data, loading } = usePointsOfInterest(destinationId);
+  const { data } = usePointsOfInterest(destinationId);
   const [isImageOpen, setIsImageOpen] = useState(false);
   const [currentImageSrc, setCurrentImageSrc] = useState('');
 
@@ -15,8 +15,6 @@ export const PointsOfInterest = ({ destinationId }) => {
     setIsImageOpen(false);
     setCurrentImageSrc('');
   };
-
-  if (loading) return <p>Loading...</p>;
 
   return (
     <>

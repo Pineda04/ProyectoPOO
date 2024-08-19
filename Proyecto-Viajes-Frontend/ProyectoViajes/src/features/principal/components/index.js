@@ -15,3 +15,4 @@ export * from './ReviewForm';
 export * from './ReservationsDetails';
 export * from './Login';
 export * from './Register';
+export * from './DestinationsListSkeleton';

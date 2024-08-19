@@ -2,16 +2,25 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getDestinationDetails } from "../../../shared/actions/destinations/destinations";
 import { PointsOfInterest } from "./PointsOfInterest";
+import { DestinationDetailsSkeleton } from "./DestinationDetailsSkeleton"; 
 
 export const DestinationDetails = () => {
   const { id } = useParams();
   const [destination, setDestination] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [isImageOpen, setIsImageOpen] = useState(false);
 
   useEffect(() => {
     const getDestination = async () => {
-      const response = await getDestinationDetails(id);
-      setDestination(response.data);
+      setIsLoading(true);
+      try {
+        const response = await getDestinationDetails(id);
+        setDestination(response.data);
+      } catch (error) {
+        console.error("Error fetching destination details:", error);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     getDestination();
@@ -25,12 +34,8 @@ export const DestinationDetails = () => {
     setIsImageOpen(false);
   };
 
-  if (!destination) {
-    return (
-      <div className="text-center text-white text-2xl py-12">
-        Cargando detalles del destino...
-      </div>
-    );
+  if (isLoading) {
+    return <DestinationDetailsSkeleton />; // Mostrar el esqueleto durante la carga
   }
 
   return (
